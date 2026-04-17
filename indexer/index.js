@@ -35,7 +35,7 @@ function getUserDB(username) {
         const needInit = !fs.existsSync(dbPath) || fs.statSync(dbPath).size === 0;
         if (needInit) {
             console.log(`[Indexer] Initializing DB for ${username}: ${dbPath}`);
-            fs.mkdirSync(dirPath, { recursive: true });
+            fs.mkdirSync(path.dirname(dbPath), { recursive: true });
             const init = new Database(dbPath);
             init.exec(`
                 PRAGMA journal_mode = DELETE;
