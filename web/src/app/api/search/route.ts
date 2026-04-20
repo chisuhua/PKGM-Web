@@ -25,7 +25,7 @@ export async function GET(req: NextRequest) {
         if (!res.ok) return NextResponse.json({ error: 'Search error' }, { status: 500 });
         const results = await res.json();
         return NextResponse.json(results);
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
     }
 }

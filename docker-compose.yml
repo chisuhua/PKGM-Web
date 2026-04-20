@@ -1,0 +1,122 @@
+services:
+  # ============================================
+  # OpenClaw Agent（原 aidev2 容器）
+  # ============================================
+  openclaw:
+    image: my-dev-env:latest
+    container_name: openclaw
+    privileged: true
+    restart: always
+    working_dir: /workspace
+    ports:
+      - "127.0.0.1:18789:18789"   # OpenClaw Web UI
+      - "127.0.0.1:50080:50080"   # 其他服务端口
+      - "127.0.0.1:8001:8001"
+      - "127.0.0.1:8002:8002"
+      - "127.0.0.1:8003:8003"
+    volumes:
+      # 用户配置
+      - ~/workspace/home/.config:/home/ubuntu/.config:rw
+      - ~/workspace/home/.bashrc:/home/ubuntu/.bashrc:ro
+      - ~/workspace/home/.openclaw:/home/ubuntu/.openclaw:rw
+      - ~/workspace/home/.claude:/home/ubuntu/.claude:rw
+      - ~/workspace/home/.claude.json:/home/ubuntu/.claude.json:ro
+      - ~/workspace/home/.ssh:/home/ubuntu/.ssh:rw
+      - ~/workspace/home/.agents:/home/ubuntu/.agents:rw
+      - ~/workspace/home/.tmux:/home/ubuntu/.tmux:rw
+      - ~/workspace/home/.tmuxinator:/home/ubuntu/.tmuxinator:rw
+      - ~/workspace/home/.tmux.conf:/home/ubuntu/.tmux.conf:ro
+      - ~/workspace/home/.local/share:/home/ubuntu/.local/share:rw
+      - ~/workspace/home/.gitconfig:/home/ubuntu/.gitconfig:ro
+      # 工具链
+      - ~/workspace/home/venv:/home/ubuntu/venv:rw
+      - ~/workspace/home/.bun/bin:/home/ubuntu/.bun/bin:rw
+      - ~/workspace/home/.bun/install/global:/home/ubuntu/.bun/install/global:rw
+      # 工作空间
+      - ~/workspace:/workspace:rw
+      - /mnt/nas/project:/workspace/project:rw
+    #command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && ~/.npm-global/bin/openclaw gateway start"]
+    command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && sleep infinity"]
+    #command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && openclaw gateway start"]
+    #command: ["sleep", "infinity"]
+    deploy:
+      resources:
+        limits:
+          memory: "5.5g"
+          cpus: "1.5"
+        reservations:
+          memory: "512m"
+          cpus: "0.25"
+
+  # ============================================
+  # PKGM-Manager（用户 Agent 管理）
+  # ============================================
+  # PKGM-Manager 运行在 openclaw 容器内（作为 Agent 实例）
+  # 通过 gateway config.patch 注册
+
+  # ============================================
+  # PKGM-Web 前端（Next.js）
+  # ============================================
+  pkgm-web:
+    build:
+      context: /mnt/nas/project/PKGM-Web
+      dockerfile: web/Dockerfile
+    container_name: pkgm-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3001"
+    volumes:
+      # 只读挂载所有用户目录
+      - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
+    env_file:
+      - ./.env  # JWT_SECRET
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - PKGM_USERS_DIR=/workspace/project/PKGM/users
+      - MULTI_USER=true
+      - INDEXER_HOST=pkgm-indexer
+      - INDEXER_PORT=3004
+    depends_on:
+      - pkgm-indexer
+    networks:
+      - pkgm-net
+    deploy:
+      resources:
+        limits:
+          memory: "512m"
+          cpus: "1.0"
+
+
+  # ============================================
+  # PKGM-Web Indexer（索引服务）
+  # ============================================
+  pkgm-indexer:
+    build:
+      context: /mnt/nas/project/PKGM-Web
+      dockerfile: indexer/Dockerfile
+    container_name: pkgm-indexer
+    restart: unless-stopped
+    volumes:
+      # 读写挂载用户目录（与 OpenClaw 共享 NAS）
+      - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:rw
+    env_file:
+      - ./.env  # JWT_SECRET（可选，如果 Indexer 需要验证）
+    environment:
+      - NODE_ENV=production
+      - PKGM_USERS_DIR=/workspace/project/PKGM/users
+      - WEB_HOST=pkgm-web
+      - WEB_PORT=3001
+      - INDEXER_PORT=3004
+      - MULTI_USER=true
+    networks:
+      - pkgm-net
+    deploy:
+      resources:
+        limits:
+          memory: "256m"
+          cpus: "0.5"
+
+networks:
+  pkgm-net:
+    driver: bridge

@@ -26,7 +26,7 @@ export async function GET(req: NextRequest) {
         if (!res.ok) return NextResponse.json({ error: 'Indexer error' }, { status: 500 });
         const doc = await res.json();
         return NextResponse.json(doc);
-    } catch (err: any) {
-        return NextResponse.json({ error: err.message }, { status: 500 });
+    } catch (err: unknown) {
+        return NextResponse.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
     }
 }
