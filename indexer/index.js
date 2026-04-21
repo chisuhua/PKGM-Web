@@ -326,7 +326,11 @@ function startHttpServer() {
                     const seg = jieba.cut(query, true).join(' ');
                     // FTS5: search the FTS virtual table, not the base documents table
                     results = db.prepare(`
-                        SELECT fts.path, fts.title, fts.content_seg, fts.type
+                        SELECT 
+                            fts.path, 
+                            fts.title, 
+                            snippet(documents_fts, 2, '<mark>', '</mark>', '...', 32) as snippet, 
+                            fts.type
                         FROM documents_fts fts
                         WHERE documents_fts MATCH ?
                         ORDER BY rank
@@ -334,8 +338,12 @@ function startHttpServer() {
                     `).all(seg);
                 } catch (e1) {
                     console.log(`[Indexer] FTS5 match failed, using LIKE: ${e1.message}`);
+                    // LIKE fallback: manually inject <mark> around matched query terms
                     const likePat = `%${query}%`;
-                    results = db.prepare(`SELECT path, title, content, type, modified FROM documents WHERE title LIKE ? OR content LIKE ? LIMIT 20`).all(likePat, likePat);
+                    const raw = db.prepare(`SELECT path, title, content, type, modified FROM documents WHERE title LIKE ? OR content LIKE ? LIMIT 20`).all(likePat, likePat);
+                    // highlight helper: wrap each occurrence of query (case-insensitive) in <mark>
+                    const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                    results = raw.map(r => ({ ...r, snippet: r.content ? r.content.replace(new RegExp(esc(query), 'gi'), m => `<mark>${m}</mark>`).slice(0, 200) : '' }));
                 }
                 res.writeHead(200, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify(results));
