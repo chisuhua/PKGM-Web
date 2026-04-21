@@ -1,0 +1,32 @@
+server {
+    server_name code.hydraskill.com; # 这里填你的域名
+
+    location / {
+        proxy_pass http://127.0.0.1:8001; # 转发给本地的 code-server (默认端口8080)
+        proxy_set_header Host $host;
+        proxy_set_header Upgrade $http_upgrade; # 关键！支持 WebSocket
+        proxy_set_header Connection "upgrade";  # 关键！支持 WebSocket
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/claw.hydraskill.com/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/claw.hydraskill.com/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+server {
+    if ($host = code.hydraskill.com) {
+        return 301 https://$host$request_uri;
+    } # managed by Certbot
+
+
+    listen 80;
+    server_name code.hydraskill.com;
+    return 404; # managed by Certbot
+
+
+}

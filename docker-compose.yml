@@ -8,6 +8,7 @@ services:
     privileged: true
     restart: always
     working_dir: /workspace
+    user: "0:0"
     ports:
       - "127.0.0.1:18789:18789"   # OpenClaw Web UI
       - "127.0.0.1:50080:50080"   # 其他服务端口
@@ -17,7 +18,8 @@ services:
     volumes:
       # 用户配置
       - ~/workspace/home/.config:/home/ubuntu/.config:rw
-      - ~/workspace/home/.bashrc:/home/ubuntu/.bashrc:ro
+      - ~/workspace/home/.bashrc:/home/ubuntu/.bashrc:rw
+      - ~/workspace/home/.npm-global:/home/ubuntu/.npm-global:rw
       - ~/workspace/home/.openclaw:/home/ubuntu/.openclaw:rw
       - ~/workspace/home/.claude:/home/ubuntu/.claude:rw
       - ~/workspace/home/.claude.json:/home/ubuntu/.claude.json:ro
@@ -26,18 +28,23 @@ services:
       - ~/workspace/home/.tmux:/home/ubuntu/.tmux:rw
       - ~/workspace/home/.tmuxinator:/home/ubuntu/.tmuxinator:rw
       - ~/workspace/home/.tmux.conf:/home/ubuntu/.tmux.conf:ro
-      - ~/workspace/home/.local/share:/home/ubuntu/.local/share:rw
       - ~/workspace/home/.gitconfig:/home/ubuntu/.gitconfig:ro
       # 工具链
+      #- ~/workspace/home/.local/share/nvim:/home/ubuntu/.local/share/nvim:rw
+      - ~/workspace/home/.local/share:/home/ubuntu/.local/share:rw
       - ~/workspace/home/venv:/home/ubuntu/venv:rw
-      - ~/workspace/home/.bun/bin:/home/ubuntu/.bun/bin:rw
-      - ~/workspace/home/.bun/install/global:/home/ubuntu/.bun/install/global:rw
+      #- ~/workspace/home/.bun/bin:/home/ubuntu/.bun/bin:rw
+      #- ~/workspace/home/.bun/install/global:/home/ubuntu/.bun/install/global:rw
       # 工作空间
       - ~/workspace:/workspace:rw
       - /mnt/nas/project:/workspace/project:rw
-    #command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && ~/.npm-global/bin/openclaw gateway start"]
-    command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && sleep infinity"]
-    #command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && openclaw gateway start"]
+      # services
+      - /mnt/nas/project/PKGM-Web/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:rw
+      - /mnt/nas/project/PKGM-Web/supervisor_log:/var/log/supervisor:rw
+    #command: ["/bin/bash", "-c", "openclaw gateway"]
+    #command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && sleep infinity"]
+    command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf", "-n"]
+    #command: ["/bin/bash"]
     #command: ["sleep", "infinity"]
     deploy:
       resources:
@@ -97,6 +104,8 @@ services:
       dockerfile: indexer/Dockerfile
     container_name: pkgm-indexer
     restart: unless-stopped
+    ports:
+      - "127.0.0.1:3004:3004"
     volumes:
       # 读写挂载用户目录（与 OpenClaw 共享 NAS）
       - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:rw

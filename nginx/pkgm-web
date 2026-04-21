@@ -1,0 +1,52 @@
+# 限速区域（移到 server 块外部）
+limit_req_zone $binary_remote_addr zone=login_limit:10m rate=1r/s;
+limit_req_zone $binary_remote_addr zone=search_limit:10m rate=5r/s;
+
+upstream pkgm-web {
+    server 127.0.0.1:3001;
+    keepalive 32;
+}
+
+server {
+    listen 80;
+    server_name www.hydraskill.com;
+
+    # 登录端点限速
+    location /api/auth/login {
+        proxy_pass http://pkgm-web;
+        limit_req zone=login_limit burst=3 nodelay;
+    }
+
+    # SSE 长连接
+    location ~ ^/docs/([^/]+)/api/notify {
+        proxy_pass http://pkgm-web;
+        proxy_http_version 1.1;
+        proxy_buffering off;
+        proxy_cache off;
+        proxy_read_timeout 86400;
+        proxy_send_timeout 86400;
+    }
+
+    # 用户路径隔离
+    location ~ ^/docs/([^/]+)/ {
+        set $user $1;
+        proxy_pass http://pkgm-web;
+        proxy_set_header X-User-ID $user;
+        proxy_set_header X-User-Path /data/users/$user;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+    }
+
+    # 搜索限速
+    location ~ ^/docs/([^/]+)/api/search {
+        set $user $1;
+        proxy_pass http://pkgm-web;
+        proxy_set_header X-User-ID $user;
+        limit_req zone=search_limit burst=10 nodelay;
+    }
+
+    # 静态资源/登录页
+    location /login { proxy_pass http://pkgm-web; }
+    location /register { proxy_pass http://pkgm-web; }
+    location /_next/ { proxy_pass http://pkgm-web; }
+}

@@ -1,0 +1,532 @@
+│
+◇  Config warnings ────────────────────────────────────────────────────────────╮
+│                                                                              │
+│  - plugins.entries.acpx: plugin acpx: duplicate plugin id detected;          │
+│    config plugin will be overridden by config plugin                         │
+│    (/home/ubuntu/.local/share/pnpm/global/5/.pnpm/openclaw@2026.4.15_@emnap  │
+│  i+core@1.10.0_@emnapi+runtime@1.10.0_@napi-rs+canvas@0.1.99_@t_4f8e0c9bb61  │
+│  d14c7228165243d7f6933/node_modules/openclaw/dist/extensions/acpx/index.js)  │
+│                                                                              │
+├──────────────────────────────────────────────────────────────────────────────╯
+2026-04-21T20:07:05.593+08:00 [gateway] loading configuration…
+2026-04-21T20:07:06.778+08:00 [gateway] resolving authentication…
+2026-04-21T20:07:06.978+08:00 [gateway] starting...
+2026-04-21T20:08:08.038+08:00 [gateway] [plugins] duplicate plugin id detected; config plugin will be overridden by config plugin (/home/ubuntu/.local/share/pnpm/global/5/.pnpm/openclaw@2026.4.15_@emnapi+core@1.10.0_@emnapi+runtime@1.10.0_@napi-rs+canvas@0.1.99_@t_4f8e0c9bb61d14c7228165243d7f6933/node_modules/openclaw/dist/extensions/acpx/index.js) (plugin=acpx, source=/home/ubuntu/.local/share/pnpm/global/5/.pnpm/openclaw@2026.4.15_@emnapi+core@1.10.0_@emnapi+runtime@1.10.0_@napi-rs+canvas@0.1.99_@t_4f8e0c9bb61d14c7228165243d7f6933/node_modules/openclaw/dist/extensions/acpx/index.js)
+2026-04-21T20:08:08.102+08:00 [gateway] starting HTTP server...
+2026-04-21T20:08:08.135+08:00 [canvas] host mounted at http://0.0.0.0:18789/__openclaw__/canvas/ (root /home/ubuntu/.openclaw/canvas)
+2026-04-21T20:08:08.692+08:00 [health-monitor] started (interval: 300s, startup-grace: 60s, channel-connect-grace: 120s)
+2026-04-21T20:08:09.579+08:00 [gateway] agent model: minimax/MiniMax-M2.7
+2026-04-21T20:08:09.584+08:00 [gateway] ready (6 plugins: acpx, browser, device-pair, feishu, phone-control, talk-voice; 62.6s)
+2026-04-21T20:08:09.590+08:00 [gateway] log file: /tmp/openclaw/openclaw-2026-04-21.log
+2026-04-21T20:08:09.963+08:00 [gateway] starting channels and sidecars...
+2026-04-21T20:08:10.482+08:00 [info]: [ 'client ready' ]
+2026-04-21T20:08:11.347+08:00 [hooks] loaded 4 internal hook handlers
+2026-04-21T20:08:14.813+08:00 [info]: [ 'client ready' ]
+2026-04-21T20:09:04.212+08:00 [error]: [
+  AxiosError: timeout of 10000ms exceeded
+      at RedirectableRequest.handleRequestTimeout (/home/ubuntu/.local/share/pnpm/global/5/.pnpm/axios@1.13.6/node_modules/axios/lib/adapters/http.js:908:13)
+      at RedirectableRequest.emit (node:events:519:28)
+      at Timeout._onTimeout (/home/ubuntu/.local/share/pnpm/global/5/.pnpm/follow-redirects@1.16.0/node_modules/follow-redirects/index.js:233:12)
+      at listOnTimeout (node:internal/timers:585:17)
+      at processTimers (node:internal/timers:521:7)
+      at Axios.request (/home/ubuntu/.local/share/pnpm/global/5/.pnpm/axios@1.13.6/node_modules/axios/lib/core/Axios.js:46:41)
+      at processTicksAndRejections (node:internal/process/task_queues:103:5)
+      at runNextTicks (node:internal/process/task_queues:68:3)
+      at processTimers (node:internal/timers:518:9) {
+    isAxiosError: true,
+    code: 'ECONNABORTED',
+    config: {
+      transitional: [Object],
+      adapter: [Array],
+      transformRequest: [Array],
+      transformResponse: [Array],
+      timeout: 10000,
+      xsrfCookieName: 'XSRF-TOKEN',
+      xsrfHeaderName: 'X-XSRF-TOKEN',
+      maxContentLength: -1,
+      maxBodyLength: -1,
+      env: [Object],
+      validateStatus: [Function: validateStatus],
+      headers: [Object [AxiosHeaders]],
+      method: 'post',
+      url: 'https://open.feishu.cn/open-apis/bot/v1/openclaw_bot/ping',
+      data: '{"needBotInfo":true}',
+      params: {},
+      allowAbsoluteUrls: true
+    },
+    request: Writable {
+      _events: [Object],
+      _writableState: [WritableState],
+      _maxListeners: undefined,
+      _options: [Object],
+      _ended: true,
+      _ending: true,
+      _redirectCount: 0,
+      _redirects: [],
+      _requestBodyLength: 20,
+      _requestBodyBuffers: [Array],
+      _eventsCount: 3,
+      _onNativeResponse: [Function (anonymous)],
+      _headerFilter: /^(?:Authorization|Proxy-Authorization|Cookie)$/i,
+      _currentRequest: [ClientRequest],
+      _currentUrl: 'https://open.feishu.cn/open-apis/bot/v1/openclaw_bot/ping',
+      _timeout: null,
+      [Symbol(shapeMode)]: true,
+      [Symbol(kCapture)]: false
+    }
+  }
+]
+2026-04-21T20:09:54.807+08:00 [ws] webchat connected conn=9079d0b5-7e73-4ff4-bcee-9f3dd2740c55 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T20:09:56.498+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=9079d0b5-7e73-4ff4-bcee-9f3dd2740c55
+2026-04-21T20:09:56.514+08:00 [ws] webchat connected conn=0ce75fa6-5483-466f-bc07-5e92a8b9f5cb remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T20:10:05.890+08:00 [feishu] starting feishu[CTO] (mode: websocket)
+2026-04-21T20:10:05.897+08:00 [feishu] starting feishu[DevMate] (mode: websocket)
+2026-04-21T20:10:05.904+08:00 [feishu] feishu[devmate]: bot open_id resolved: ou_667c60e69979a5cdf96d2f8650d49344
+2026-04-21T20:10:06.027+08:00 [plugins] embedded acpx runtime backend registered (cwd: /home/ubuntu/.openclaw/workspace)
+2026-04-21T20:10:06.303+08:00 [browser/server] Browser control listening on http://127.0.0.1:18791/ (auth=token)
+2026-04-21T20:10:06.375+08:00 [ws] webchat connected conn=2bfb8e77-3b1e-4df1-8878-66aab4b53dcd remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T20:10:06.496+08:00 [ws] ⇄ res ✗ chat.history 2ms errorCode=UNAVAILABLE errorMessage=chat.history unavailable during gateway startup conn=2bfb8e77…3dcd id=168e4cce…e517
+2026-04-21T20:10:06.581+08:00 [ws] ⇄ res ✓ sessions.list 76ms conn=2bfb8e77…3dcd id=6c6e53dc…a5e8
+2026-04-21T20:10:06.592+08:00 [ws] ⇄ res ✗ models.list 1ms errorCode=UNAVAILABLE errorMessage=models.list unavailable during gateway startup conn=2bfb8e77…3dcd id=805ac059…c30d
+2026-04-21T20:10:09.990+08:00 [ws] ⇄ res ✓ commands.list 3391ms conn=2bfb8e77…3dcd id=dbf2c2dc…e52e
+2026-04-21T20:10:10.015+08:00 [ws] ⇄ res ✓ node.list 4066ms conn=0ce75fa6…f5cb id=2885a5df…abb7
+2026-04-21T20:10:10.018+08:00 [info]: [ 'event-dispatch is ready' ]
+2026-04-21T20:10:10.056+08:00 [feishu] feishu[devmate]: starting WebSocket connection...
+2026-04-21T20:10:10.062+08:00 [info]: [
+  '[ws]',
+  'receive events or callbacks through persistent connection only available in self-build & Feishu app, Configured in:\n' +
+    '        Developer Console(开发者后台) \n' +
+    '          ->\n' +
+    '        Events and Callbacks(事件与回调)\n' +
+    '          -> \n' +
+    '        Mode of event/callback subscription(订阅方式)\n' +
+    '          -> \n' +
+    '        Receive events/callbacks through persistent connection(使用 长连接 接收事件/回调)'
+]
+2026-04-21T20:10:10.070+08:00 [feishu] feishu[devmate]: WebSocket client started
+2026-04-21T20:10:10.084+08:00 [ws] ⇄ res ✓ device.pair.list 4132ms conn=0ce75fa6…f5cb id=44479343…3dc3
+2026-04-21T20:10:10.092+08:00 [ws] ⇄ res ✗ chat.history 0ms errorCode=UNAVAILABLE errorMessage=chat.history unavailable during gateway startup conn=2bfb8e77…3dcd id=b3c5bf68…a1e2
+2026-04-21T20:10:10.229+08:00 [plugins] embedded acpx runtime backend ready
+2026-04-21T20:10:10.249+08:00 [feishu] feishu[cto]: bot open_id resolved: ou_d427810c11d6fba36328ec6d784de215
+2026-04-21T20:10:10.264+08:00 [ws] ⇄ res ✓ node.list 3786ms conn=2bfb8e77…3dcd id=9709591c…b5b5
+2026-04-21T20:10:10.271+08:00 [ws] ⇄ res ✓ device.pair.list 3789ms conn=2bfb8e77…3dcd id=2b890065…2c50
+2026-04-21T20:10:10.301+08:00 [heartbeat] started
+2026-04-21T20:10:10.435+08:00 [info]: [ 'event-dispatch is ready' ]
+2026-04-21T20:10:10.443+08:00 [feishu] feishu[cto]: starting WebSocket connection...
+2026-04-21T20:10:10.446+08:00 [info]: [
+  '[ws]',
+  'receive events or callbacks through persistent connection only available in self-build & Feishu app, Configured in:\n' +
+    '        Developer Console(开发者后台) \n' +
+    '          ->\n' +
+    '        Events and Callbacks(事件与回调)\n' +
+    '          -> \n' +
+    '        Mode of event/callback subscription(订阅方式)\n' +
+    '          -> \n' +
+    '        Receive events/callbacks through persistent connection(使用 长连接 接收事件/回调)'
+]
+2026-04-21T20:10:10.454+08:00 [feishu] feishu[cto]: WebSocket client started
+2026-04-21T20:10:23.364+08:00 [ws] ⇄ res ✓ chat.history 12755ms conn=2bfb8e77…3dcd id=d9f68a2a…51f0
+2026-04-21T20:10:23.380+08:00 [info]: [ '[ws]', 'ws client ready' ]
+2026-04-21T20:10:23.386+08:00 [info]: [ '[ws]', 'ws client ready' ]
+2026-04-21T20:12:35.616+08:00 [ws] ⇄ res ✓ chat.send 53ms runId=407f5ef1-2292-4a4a-b263-93c20e1c85df conn=2bfb8e77…3dcd id=4e4a1463…9185
+2026-04-21T20:12:37.583+08:00 [ws] ⇄ res ✓ sessions.list 54ms conn=2bfb8e77…3dcd id=bec1b9e0…a316
+2026-04-21T20:12:37.624+08:00 [ws] ⇄ res ✓ chat.history 234ms conn=2bfb8e77…3dcd id=762597e6…5a0f
+2026-04-21T20:12:37.809+08:00 [ws] ⇄ res ✓ sessions.list 164ms conn=0ce75fa6…f5cb id=4f0c7e63…7e8f
+2026-04-21T20:13:12.349+08:00 [ws] ⇄ res ✓ node.list 3996ms conn=2bfb8e77…3dcd id=4e63ecb4…28f3
+2026-04-21T20:13:12.354+08:00 [ws] ⇄ res ✓ node.list 3996ms conn=0ce75fa6…f5cb id=9445e781…e50d
+2026-04-21T20:13:27.195+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=0ce75fa6-5483-466f-bc07-5e92a8b9f5cb
+2026-04-21T20:13:27.306+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=2bfb8e77-3b1e-4df1-8878-66aab4b53dcd
+2026-04-21T20:13:27.380+08:00 [ws] webchat connected conn=a9d62b67-2e62-456a-bd53-aa976281b7b0 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T20:13:27.498+08:00 [ws] ⇄ res ✓ node.list 352ms conn=2bfb8e77…3dcd id=4918e1c5…15da
+2026-04-21T20:13:55.284+08:00 [ws] ⇄ res ✓ sessions.list 83ms conn=a9d62b67…b7b0 id=0d20b2c3…4254
+2026-04-21T20:14:02.687+08:00 [ws] ⇄ res ✓ commands.list 7391ms conn=a9d62b67…b7b0 id=f0e07f3f…9d0f
+2026-04-21T20:14:02.721+08:00 [ws] ⇄ res ✓ chat.history 7685ms conn=a9d62b67…b7b0 id=9b17619d…9239
+2026-04-21T20:14:02.799+08:00 [ws] ⇄ res ✓ models.list 7504ms conn=a9d62b67…b7b0 id=a172ab2f…35a2
+2026-04-21T20:14:03.155+08:00 [ws] ⇄ res ✓ node.list 8107ms conn=a9d62b67…b7b0 id=38949f25…61ec
+2026-04-21T20:14:03.179+08:00 [ws] ⇄ res ✓ device.pair.list 8149ms conn=a9d62b67…b7b0 id=7effbd3a…5f64
+2026-04-21T20:14:03.208+08:00 [ws] webchat connected conn=094461ab-b833-4d7d-aaa0-05aa716043bd remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T20:14:03.403+08:00 [ws] webchat connected conn=11937b9e-6d62-4337-a072-b84591dd10fe remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T20:14:03.625+08:00 [ws] ⇄ res ✓ sessions.list 112ms conn=11937b9e…10fe id=2176be71…703b
+2026-04-21T20:14:03.784+08:00 [ws] webchat connected conn=43b17f99-bd22-476f-a8aa-46bdaa476c4f remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T20:14:04.124+08:00 [ws] ⇄ res ✓ sessions.list 98ms conn=094461ab…43bd id=541a22c1…8aac
+2026-04-21T20:14:08.296+08:00 [ws] ⇄ res ✓ commands.list 4159ms conn=094461ab…43bd id=d17faaae…dde0
+2026-04-21T20:14:08.319+08:00 [ws] ⇄ res ✓ chat.history 4439ms conn=094461ab…43bd id=1e92a5b6…3036
+2026-04-21T20:14:08.383+08:00 [ws] ⇄ res ✓ models.list 4235ms conn=094461ab…43bd id=2e7e1690…5cee
+2026-04-21T20:14:08.458+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=11937b9e-6d62-4337-a072-b84591dd10fe
+2026-04-21T20:14:08.488+08:00 [ws] ⇄ res ✓ node.list 4993ms conn=11937b9e…10fe id=a066bb58…71e0
+2026-04-21T20:14:08.498+08:00 [ws] ⇄ res ✓ device.pair.list 4997ms conn=11937b9e…10fe id=3c7bc54c…7d1c
+2026-04-21T20:14:08.620+08:00 [ws] ⇄ res ✓ node.list 4741ms conn=094461ab…43bd id=e202de10…0163
+2026-04-21T20:14:08.643+08:00 [ws] ⇄ res ✓ device.pair.list 4762ms conn=094461ab…43bd id=190d050e…f01c
+2026-04-21T20:14:08.679+08:00 [ws] ⇄ res ✓ node.list 139ms conn=43b17f99…6c4f id=b8817e93…48b2
+2026-04-21T20:14:08.703+08:00 [ws] ⇄ res ✓ device.pair.list 176ms conn=43b17f99…6c4f id=83594e9e…5318
+2026-04-21T20:14:32.939+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=a9d62b67-2e62-456a-bd53-aa976281b7b0
+2026-04-21T20:15:08.332+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=094461ab-b833-4d7d-aaa0-05aa716043bd
+2026-04-21T20:16:17.505+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_f77396943e11f788f00ce3f9ca534e82 (p2p)
+2026-04-21T20:16:17.686+08:00 [feishu] feishu[devmate]: Feishu[devmate] DM from ou_37c6b02bb652b85c0e2fa715435f1858: 测试消息
+2026-04-21T20:16:17.776+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:main)
+2026-04-21T20:17:11.892+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-21T20:17:55.088+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_f77396943e11f788f00ce3f9ca534e82 (p2p)
+2026-04-21T20:17:55.104+08:00 [feishu] feishu[devmate]: Feishu[devmate] DM from ou_37c6b02bb652b85c0e2fa715435f1858: 你检查下openclaw运行状态，为什么运行的很慢
+2026-04-21T20:17:55.169+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:main)
+2026-04-21T20:18:44.836+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=43b17f99-bd22-476f-a8aa-46bdaa476c4f
+2026-04-21T20:18:44.934+08:00 [info]: [ '[ws]', 'reconnect' ]
+2026-04-21T20:19:52.411+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631186176243043291, messageId=om_x100b5142f8a3e538b3c61a0b782beb7
+2026-04-21T20:19:54.868+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631186176243043291
+2026-04-21T20:19:54.871+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-21T21:10:58.111+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_f77396943e11f788f00ce3f9ca534e82 (p2p)
+2026-04-21T21:10:58.117+08:00 [feishu] feishu[devmate]: Feishu[devmate] DM from ou_37c6b02bb652b85c0e2fa715435f1858: 磁盘容量是不是快满了
+2026-04-21T21:10:58.131+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:main)
+2026-04-21T21:12:55.362+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631199840048335812, messageId=om_x100b5143339ad0f8b21ea40c8d28f6a
+2026-04-21T21:12:56.377+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631199840048335812
+2026-04-21T21:12:56.384+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-21T21:14:24.445+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_f77396943e11f788f00ce3f9ca534e82 (p2p)
+2026-04-21T21:14:24.455+08:00 [feishu] feishu[devmate]: Feishu[devmate] DM from ou_37c6b02bb652b85c0e2fa715435f1858: 现在编译任务还在进行吗
+2026-04-21T21:14:24.483+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:main)
+2026-04-21T21:14:45.977+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631200328080657355, messageId=om_x100b5143ca9584a4b2de4f210bf461a
+2026-04-21T21:14:47.030+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631200328080657355
+2026-04-21T21:14:47.034+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-21T22:03:40.642+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_f77396943e11f788f00ce3f9ca534e82 (p2p)
+2026-04-21T22:03:40.651+08:00 [feishu] feishu[devmate]: Feishu[devmate] DM from ou_37c6b02bb652b85c0e2fa715435f1858: 你查下openclaw的log,/var/logs/supervisord目录下找找
+2026-04-21T22:03:40.679+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:main)
+2026-04-21T22:04:18.079+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631213094581144508, messageId=om_x100b514c70d784acb2c0de4802d6d24
+2026-04-21T22:04:19.142+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631213094581144508
+2026-04-21T22:04:19.147+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-21T22:57:34.336+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_a1075829be1b03f1a41ff11b7b56e7f4 (group)
+2026-04-21T22:57:34.362+08:00 [feishu] feishu[devmate]: group session scope=group, peer=oc_a1075829be1b03f1a41ff11b7b56e7f4
+2026-04-21T22:57:34.368+08:00 [feishu] feishu[devmate]: Feishu[devmate] message in group oc_a1075829be1b03f1a41ff11b7b56e7f4: 项目状态
+2026-04-21T22:57:34.382+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:feishu:group:oc_a1075829be1b03f1a41ff11b7b56e7f4)
+2026-04-21T22:58:04.065+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631226950157716428, messageId=om_x100b514d497678a0b39183ad528255d
+2026-04-21T22:58:05.178+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631226950157716428
+2026-04-21T22:58:05.182+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-21T23:01:14.201+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_a1075829be1b03f1a41ff11b7b56e7f4 (group)
+2026-04-21T23:01:14.207+08:00 [feishu] feishu[devmate]: group session scope=group, peer=oc_a1075829be1b03f1a41ff11b7b56e7f4
+2026-04-21T23:01:14.210+08:00 [feishu] feishu[devmate]: Feishu[devmate] message in group oc_a1075829be1b03f1a41ff11b7b56e7f4: 有什么办法让你在宿主机环境里执行测试的命令
+2026-04-21T23:01:14.230+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:feishu:group:oc_a1075829be1b03f1a41ff11b7b56e7f4)
+2026-04-21T23:02:09.211+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631228002664434642, messageId=om_x100b514d59c3c8acb36468d492c5d1b
+2026-04-21T23:02:10.195+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631228002664434642
+2026-04-21T23:02:10.199+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-21T23:44:30.656+08:00 [ws] webchat connected conn=35bcb624-0d58-4596-906e-89ed903bb3d9 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T23:44:31.228+08:00 [ws] ⇄ res ✓ sessions.list 131ms conn=35bcb624…b3d9 id=4397ddf8…8749
+2026-04-21T23:44:32.957+08:00 [ws] ⇄ res ✓ commands.list 1714ms conn=35bcb624…b3d9 id=13a8e4c1…bf8b
+2026-04-21T23:44:32.968+08:00 [ws] ⇄ res ✓ chat.history 2139ms conn=35bcb624…b3d9 id=b9b0c67d…6a00
+2026-04-21T23:44:32.984+08:00 [ws] ⇄ res ✓ models.list 1748ms conn=35bcb624…b3d9 id=6fcba61a…22df
+2026-04-21T23:44:33.035+08:00 [ws] ⇄ res ✓ node.list 2218ms conn=35bcb624…b3d9 id=5a011955…7ee0
+2026-04-21T23:44:33.041+08:00 [ws] ⇄ res ✓ device.pair.list 2222ms conn=35bcb624…b3d9 id=24cd5fe3…0c13
+2026-04-21T23:44:33.049+08:00 [ws] webchat connected conn=5d3c89bc-7d66-47fd-9a61-d0aa46e335c3 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T23:44:33.110+08:00 [ws] webchat connected conn=b692348f-33cc-48d0-a47f-7e31e25f3ce5 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T23:44:33.697+08:00 [ws] ⇄ res ✓ sessions.list 60ms conn=5d3c89bc…35c3 id=23ea29a0…170c
+2026-04-21T23:44:37.487+08:00 [ws] ⇄ res ✓ commands.list 3653ms conn=b692348f…3ce5 id=f03b46cb…43f2
+2026-04-21T23:44:37.530+08:00 [ws] ⇄ res ✓ chat.history 3785ms conn=b692348f…3ce5 id=93a7d23c…a5bd
+2026-04-21T23:44:37.678+08:00 [ws] ⇄ res ✓ models.list 3810ms conn=b692348f…3ce5 id=59d057ee…0be0
+2026-04-21T23:44:38.010+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=5d3c89bc-7d66-47fd-9a61-d0aa46e335c3
+2026-04-21T23:44:38.114+08:00 [ws] webchat connected conn=b7a50557-18fc-4941-93cf-e5c8151611f2 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-21T23:44:38.334+08:00 [ws] ⇄ res ✓ node.list 4674ms conn=5d3c89bc…35c3 id=e3aa4b30…3a0d
+2026-04-21T23:44:38.393+08:00 [ws] ⇄ res ✓ device.pair.list 4717ms conn=5d3c89bc…35c3 id=42a17a89…747a
+2026-04-21T23:44:38.438+08:00 [ws] ⇄ res ✓ node.list 4693ms conn=b692348f…3ce5 id=683f4cd3…cb3d
+2026-04-21T23:44:38.501+08:00 [ws] ⇄ res ✓ device.pair.list 4745ms conn=b692348f…3ce5 id=a230ec5e…2982
+2026-04-21T23:44:48.130+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=35bcb624-0d58-4596-906e-89ed903bb3d9
+2026-04-22T00:00:58.828+08:00 [ws] ⇄ res ✓ node.list 179ms conn=b692348f…3ce5 id=698ed678…7d23
+2026-04-22T00:01:00.860+08:00 [ws] ⇄ res ✓ sessions.list 134ms conn=b7a50557…11f2 id=b36412a2…3a8d
+2026-04-22T00:01:00.993+08:00 [ws] ⇄ res ✓ sessions.list 113ms conn=b692348f…3ce5 id=f101b703…28cd
+2026-04-22T00:01:01.095+08:00 [ws] ⇄ res ✓ chat.history 93ms conn=b692348f…3ce5 id=b872717d…024d
+2026-04-22T00:01:33.574+08:00 [ws] ⇄ res ✓ chat.history 84ms conn=b692348f…3ce5 id=5d0a7176…aaa0
+2026-04-22T00:01:33.661+08:00 [ws] ⇄ res ✓ chat.history 69ms conn=b692348f…3ce5 id=7d3444f6…081b
+2026-04-22T00:01:35.599+08:00 [ws] ⇄ res ✓ chat.history 135ms conn=b692348f…3ce5 id=6a3ef655…a508
+2026-04-22T00:01:37.619+08:00 [ws] ⇄ res ✓ chat.history 54ms conn=b692348f…3ce5 id=b07267a1…0fb2
+2026-04-22T00:02:11.030+08:00 [ws] ⇄ res ✓ chat.history 61ms conn=b692348f…3ce5 id=778be89d…fb70
+2026-04-22T00:02:22.129+08:00 [ws] ⇄ res ✓ chat.history 66ms conn=b692348f…3ce5 id=de3eceba…7ad4
+2026-04-22T00:02:22.941+08:00 [ws] ⇄ res ✓ commands.list 805ms conn=b692348f…3ce5 id=41b6f1d1…ba2c
+2026-04-22T00:02:22.955+08:00 [ws] ⇄ res ✓ models.list 818ms conn=b692348f…3ce5 id=dd50fa87…85ad
+2026-04-22T00:04:50.621+08:00 [ws] ⇄ res ✓ chat.history 74ms conn=b692348f…3ce5 id=794a6205…7481
+2026-04-22T00:04:54.398+08:00 [ws] ⇄ res ✓ node.list 304ms conn=b692348f…3ce5 id=8cef97c7…5d1e
+2026-04-22T00:05:35.209+08:00 [ws] ⇄ res ✓ sessions.list 55ms conn=b7a50557…11f2 id=76b6aadf…1ff7
+2026-04-22T00:05:35.309+08:00 [ws] ⇄ res ✓ chat.history 93ms conn=b692348f…3ce5 id=954270d7…a174
+2026-04-22T00:05:54.265+08:00 [ws] ⇄ res ✓ chat.history 106ms conn=b692348f…3ce5 id=0ac04ede…c630
+2026-04-22T00:07:15.939+08:00 [ws] ⇄ res ✓ chat.history 109ms conn=b692348f…3ce5 id=38eedecb…3a3d
+2026-04-22T00:07:37.910+08:00 [ws] ⇄ res ✓ sessions.list 108ms conn=b692348f…3ce5 id=47d2baae…584f
+2026-04-22T00:07:37.928+08:00 [ws] ⇄ res ✓ chat.history 275ms conn=b692348f…3ce5 id=1f6e9964…697b
+2026-04-22T00:07:38.025+08:00 [ws] ⇄ res ✓ sessions.list 76ms conn=b7a50557…11f2 id=d6259a80…286e
+2026-04-22T00:07:51.795+08:00 [ws] ⇄ res ✓ sessions.list 129ms conn=b692348f…3ce5 id=d31e1dcd…8cb0
+2026-04-22T00:07:51.835+08:00 [ws] ⇄ res ✓ chat.history 352ms conn=b692348f…3ce5 id=fdfc7940…f101
+2026-04-22T00:07:51.946+08:00 [ws] ⇄ res ✓ sessions.list 98ms conn=b7a50557…11f2 id=acfeaa0c…5aa1
+2026-04-22T00:08:17.243+08:00 [ws] ⇄ res ✓ sessions.list 199ms conn=b692348f…3ce5 id=e34d40c0…7b37
+2026-04-22T00:08:17.305+08:00 [ws] ⇄ res ✓ chat.history 431ms conn=b692348f…3ce5 id=f79795b7…ce06
+2026-04-22T00:08:17.519+08:00 [ws] ⇄ res ✓ sessions.list 173ms conn=b7a50557…11f2 id=ae38597f…e687
+2026-04-22T00:08:32.139+08:00 [ws] ⇄ res ✓ sessions.list 225ms conn=b692348f…3ce5 id=689aa00c…ad20
+2026-04-22T00:08:32.213+08:00 [ws] ⇄ res ✓ chat.history 414ms conn=b692348f…3ce5 id=8634d2b6…4a37
+2026-04-22T00:08:32.385+08:00 [ws] ⇄ res ✓ sessions.list 144ms conn=b7a50557…11f2 id=4176441d…748d
+2026-04-22T00:08:40.762+08:00 [ws] ⇄ res ✓ sessions.list 110ms conn=b7a50557…11f2 id=c8344d2c…748a
+2026-04-22T00:08:40.883+08:00 [ws] ⇄ res ✓ sessions.list 63ms conn=b692348f…3ce5 id=e326a910…e8f3
+2026-04-22T00:08:40.899+08:00 [ws] ⇄ res ✓ chat.history 129ms conn=b692348f…3ce5 id=10e4a42f…8ab6
+2026-04-22T00:08:54.535+08:00 [ws] ⇄ res ✓ sessions.list 50ms conn=b692348f…3ce5 id=3760c896…63fa
+2026-04-22T00:08:54.572+08:00 [ws] ⇄ res ✓ chat.history 169ms conn=b692348f…3ce5 id=0207b33f…c548
+2026-04-22T00:08:54.670+08:00 [ws] ⇄ res ✓ sessions.list 62ms conn=b7a50557…11f2 id=a20d0afa…1fad
+2026-04-22T00:09:03.857+08:00 [ws] ⇄ res ✓ sessions.list 108ms conn=b7a50557…11f2 id=54897bc2…3840
+2026-04-22T00:09:04.208+08:00 [ws] ⇄ res ✓ sessions.list 160ms conn=b692348f…3ce5 id=1e094a6d…c6c9
+2026-04-22T00:09:04.259+08:00 [ws] ⇄ res ✓ chat.history 369ms conn=b692348f…3ce5 id=dcd56722…ca46
+2026-04-22T00:09:12.230+08:00 [ws] ⇄ res ✓ sessions.list 167ms conn=b692348f…3ce5 id=63eb6d57…5681
+2026-04-22T00:09:12.288+08:00 [ws] ⇄ res ✓ chat.history 392ms conn=b692348f…3ce5 id=6d31d8d8…7e40
+2026-04-22T00:09:12.446+08:00 [ws] ⇄ res ✓ sessions.list 129ms conn=b7a50557…11f2 id=98588294…2c37
+2026-04-22T00:09:23.789+08:00 [ws] ⇄ res ✓ sessions.list 76ms conn=b692348f…3ce5 id=33fdd62c…8c9f
+2026-04-22T00:09:23.807+08:00 [ws] ⇄ res ✓ chat.history 187ms conn=b692348f…3ce5 id=a30a2116…bc8c
+2026-04-22T00:09:23.872+08:00 [ws] ⇄ res ✓ sessions.list 58ms conn=b7a50557…11f2 id=9a071457…efa6
+2026-04-22T00:09:37.620+08:00 [ws] ⇄ res ✓ sessions.list 192ms conn=b692348f…3ce5 id=9b2a5cd3…12b0
+2026-04-22T00:09:37.677+08:00 [ws] ⇄ res ✓ chat.history 345ms conn=b692348f…3ce5 id=dd3a5c5f…9ced
+2026-04-22T00:09:37.808+08:00 [ws] ⇄ res ✓ sessions.list 112ms conn=b7a50557…11f2 id=b937d95f…4f39
+2026-04-22T00:09:54.491+08:00 [ws] ⇄ res ✓ sessions.list 163ms conn=b692348f…3ce5 id=d5f1cf9b…245d
+2026-04-22T00:09:54.529+08:00 [ws] ⇄ res ✓ chat.history 332ms conn=b692348f…3ce5 id=faeb69e7…3d33
+2026-04-22T00:09:54.636+08:00 [ws] ⇄ res ✓ sessions.list 89ms conn=b7a50557…11f2 id=ea7319d1…d01f
+2026-04-22T00:10:04.694+08:00 [ws] ⇄ res ✓ sessions.list 157ms conn=b692348f…3ce5 id=2a781179…f096
+2026-04-22T00:10:04.735+08:00 [ws] ⇄ res ✓ chat.history 383ms conn=b692348f…3ce5 id=875e0f0c…d7f6
+2026-04-22T00:10:04.860+08:00 [ws] ⇄ res ✓ sessions.list 111ms conn=b7a50557…11f2 id=b506e48a…500b
+2026-04-22T00:10:16.285+08:00 [ws] ⇄ res ✓ sessions.list 55ms conn=b692348f…3ce5 id=aff8da5b…85b7
+2026-04-22T00:10:16.301+08:00 [ws] ⇄ res ✓ chat.history 147ms conn=b692348f…3ce5 id=c406dfb7…f854
+2026-04-22T00:10:16.378+08:00 [ws] ⇄ res ✓ sessions.list 71ms conn=b7a50557…11f2 id=3c060609…2df7
+2026-04-22T00:10:42.046+08:00 [ws] ⇄ res ✓ sessions.list 142ms conn=b692348f…3ce5 id=5ad18cff…8481
+2026-04-22T00:10:42.077+08:00 [ws] ⇄ res ✓ chat.history 452ms conn=b692348f…3ce5 id=f0adedc6…5227
+2026-04-22T00:10:42.154+08:00 [ws] ⇄ res ✓ sessions.list 70ms conn=b7a50557…11f2 id=9e1991e1…ea4e
+2026-04-22T00:10:53.111+08:00 [ws] ⇄ res ✓ sessions.list 151ms conn=b692348f…3ce5 id=4d27cb4e…ba3d
+2026-04-22T00:10:53.146+08:00 [ws] ⇄ res ✓ chat.history 348ms conn=b692348f…3ce5 id=19f421f5…bc88
+2026-04-22T00:10:53.330+08:00 [ws] ⇄ res ✓ sessions.list 167ms conn=b7a50557…11f2 id=e7366b0d…3711
+2026-04-22T00:11:01.311+08:00 [ws] ⇄ res ✓ sessions.list 162ms conn=b692348f…3ce5 id=269b4050…4fe6
+2026-04-22T00:11:01.354+08:00 [ws] ⇄ res ✓ chat.history 327ms conn=b692348f…3ce5 id=9213d8c8…8c5b
+2026-04-22T00:11:01.638+08:00 [ws] ⇄ res ✓ sessions.list 226ms conn=b7a50557…11f2 id=ccbb5cec…75c6
+2026-04-22T00:11:12.074+08:00 [ws] ⇄ res ✓ sessions.list 199ms conn=b692348f…3ce5 id=3c853574…58dc
+2026-04-22T00:11:12.130+08:00 [ws] ⇄ res ✓ chat.history 488ms conn=b692348f…3ce5 id=8697bcef…148a
+2026-04-22T00:11:12.283+08:00 [ws] ⇄ res ✓ sessions.list 143ms conn=b7a50557…11f2 id=ea03378f…62e2
+2026-04-22T00:11:14.540+08:00 [ws] ⇄ res ✓ node.list 635ms conn=b692348f…3ce5 id=af90576d…dfa7
+2026-04-22T00:11:33.542+08:00 [ws] ⇄ res ✓ sessions.list 203ms conn=b692348f…3ce5 id=f02f32e7…bb4e
+2026-04-22T00:11:33.601+08:00 [ws] ⇄ res ✓ chat.history 553ms conn=b692348f…3ce5 id=57d01ecf…961c
+2026-04-22T00:11:33.842+08:00 [ws] ⇄ res ✓ sessions.list 210ms conn=b7a50557…11f2 id=be18c65d…7d34
+2026-04-22T00:11:33.912+08:00 [ws] ⇄ res ✓ node.list 307ms conn=b692348f…3ce5 id=08b224e5…3950
+2026-04-22T00:11:33.944+08:00 [ws] ⇄ res ✓ node.list 74ms conn=b7a50557…11f2 id=19c5b64c…59ad
+2026-04-22T00:11:46.529+08:00 [ws] ⇄ res ✓ sessions.list 513ms conn=b692348f…3ce5 id=ac5ee322…a056
+2026-04-22T00:11:46.700+08:00 [ws] ⇄ res ✓ chat.history 1094ms conn=b692348f…3ce5 id=9db6d11d…2e2a
+2026-04-22T00:11:47.186+08:00 [ws] ⇄ res ✓ sessions.list 428ms conn=b7a50557…11f2 id=c54bfd14…5bd0
+2026-04-22T00:11:51.316+08:00 [ws] ⇄ res ✓ node.list 1796ms conn=b7a50557…11f2 id=2112c028…13a9
+2026-04-22T00:11:51.335+08:00 [ws] ⇄ res ✓ node.list 1811ms conn=b692348f…3ce5 id=87dbd559…6f7f
+2026-04-22T00:12:18.371+08:00 [ws] ⇄ res ✓ sessions.list 270ms conn=b692348f…3ce5 id=782b946f…ee0d
+2026-04-22T00:12:18.443+08:00 [ws] ⇄ res ✓ chat.history 625ms conn=b692348f…3ce5 id=385d1ee2…5d7d
+2026-04-22T00:12:18.780+08:00 [ws] ⇄ res ✓ sessions.list 264ms conn=b7a50557…11f2 id=f4177947…e790
+2026-04-22T00:12:23.548+08:00 [ws] ⇄ res ✓ node.list 50ms conn=b7a50557…11f2 id=e2e6a0ea…4eb6
+2026-04-22T00:12:23.602+08:00 [ws] ⇄ res ✓ node.list 95ms conn=b692348f…3ce5 id=f4f8ebe0…a80d
+2026-04-22T00:12:36.250+08:00 [ws] ⇄ res ✓ sessions.list 207ms conn=b692348f…3ce5 id=a6249db7…8e64
+2026-04-22T00:12:36.329+08:00 [ws] ⇄ res ✓ chat.history 450ms conn=b692348f…3ce5 id=eba78ade…fb68
+2026-04-22T00:12:36.546+08:00 [ws] ⇄ res ✓ sessions.list 201ms conn=b7a50557…11f2 id=ab5cab38…0db5
+2026-04-22T00:12:51.142+08:00 [ws] ⇄ res ✓ sessions.list 436ms conn=b692348f…3ce5 id=f15328b8…4f11
+2026-04-22T00:12:51.273+08:00 [ws] ⇄ res ✓ chat.history 916ms conn=b692348f…3ce5 id=06dedc3f…a512
+2026-04-22T00:12:51.583+08:00 [ws] ⇄ res ✓ sessions.list 255ms conn=b7a50557…11f2 id=30205699…7a9a
+2026-04-22T00:12:58.573+08:00 [ws] ⇄ res ✓ node.list 51ms conn=b7a50557…11f2 id=75333936…f105
+2026-04-22T00:13:07.285+08:00 [ws] ⇄ res ✓ sessions.list 451ms conn=b692348f…3ce5 id=cd7b07d6…9526
+2026-04-22T00:13:07.414+08:00 [ws] ⇄ res ✓ chat.history 1144ms conn=b692348f…3ce5 id=4dd4c9fc…f053
+2026-04-22T00:13:07.905+08:00 [ws] ⇄ res ✓ sessions.list 406ms conn=b7a50557…11f2 id=6e3d3d18…ebff
+2026-04-22T00:13:08.138+08:00 [ws] ⇄ res ✓ node.list 80ms conn=b692348f…3ce5 id=62729e5b…1cd6
+2026-04-22T00:13:10.438+08:00 [ws] ⇄ res ✓ node.list 1925ms conn=b7a50557…11f2 id=d8a51cd7…f496
+2026-04-22T00:13:23.618+08:00 [ws] ⇄ res ✓ node.list 110ms conn=b7a50557…11f2 id=c020a0ce…0535
+2026-04-22T00:13:23.692+08:00 [ws] ⇄ res ✓ node.list 145ms conn=b692348f…3ce5 id=3896fd48…f13c
+2026-04-22T00:13:30.220+08:00 [ws] ⇄ res ✓ sessions.list 335ms conn=b692348f…3ce5 id=4b480297…caff
+2026-04-22T00:13:30.371+08:00 [ws] ⇄ res ✓ chat.history 740ms conn=b692348f…3ce5 id=302bb1d2…f58d
+2026-04-22T00:13:30.820+08:00 [ws] ⇄ res ✓ sessions.list 341ms conn=b7a50557…11f2 id=e92ffa81…824a
+2026-04-22T00:13:31.194+08:00 [ws] ⇄ res ✓ node.list 1563ms conn=b692348f…3ce5 id=03678713…4449
+2026-04-22T00:13:31.279+08:00 [ws] ⇄ res ✓ node.list 833ms conn=b7a50557…11f2 id=6bd38080…2984
+2026-04-22T00:13:33.576+08:00 [ws] ⇄ res ✓ node.list 50ms conn=b692348f…3ce5 id=d489768a…ad29
+2026-04-22T00:13:43.590+08:00 [ws] ⇄ res ✓ node.list 64ms conn=b7a50557…11f2 id=130d4adf…1e86
+2026-04-22T00:13:43.645+08:00 [ws] ⇄ res ✓ node.list 129ms conn=b692348f…3ce5 id=38360c14…4457
+2026-04-22T00:13:45.723+08:00 [ws] ⇄ res ✓ sessions.list 502ms conn=b692348f…3ce5 id=f1333865…5779
+2026-04-22T00:13:45.874+08:00 [ws] ⇄ res ✓ chat.history 1086ms conn=b692348f…3ce5 id=9def5545…9ab6
+2026-04-22T00:13:46.283+08:00 [ws] ⇄ res ✓ sessions.list 334ms conn=b7a50557…11f2 id=03f8905d…cc7b
+2026-04-22T00:13:53.236+08:00 [ws] ⇄ res ✓ node.list 1769ms conn=b692348f…3ce5 id=f211e4dc…2665
+2026-04-22T00:13:53.306+08:00 [ws] ⇄ res ✓ node.list 1807ms conn=b7a50557…11f2 id=5eb36297…0372
+2026-04-22T00:13:53.574+08:00 [ws] ⇄ res ✓ node.list 65ms conn=b7a50557…11f2 id=01af0886…31ac
+2026-04-22T00:13:53.641+08:00 [ws] ⇄ res ✓ node.list 128ms conn=b692348f…3ce5 id=b27507f0…2b45
+2026-04-22T00:13:58.586+08:00 [ws] ⇄ res ✓ node.list 57ms conn=b7a50557…11f2 id=2d54af89…54ab
+2026-04-22T00:13:58.644+08:00 [ws] ⇄ res ✓ node.list 121ms conn=b692348f…3ce5 id=8baf6d34…3602
+2026-04-22T00:14:08.593+08:00 [ws] ⇄ res ✓ node.list 91ms conn=b7a50557…11f2 id=4557628c…bb08
+2026-04-22T00:14:08.671+08:00 [ws] ⇄ res ✓ node.list 122ms conn=b692348f…3ce5 id=0f9da766…98a5
+2026-04-22T00:14:14.574+08:00 [ws] ⇄ res ✓ sessions.list 490ms conn=b692348f…3ce5 id=47758f85…2509
+2026-04-22T00:14:14.771+08:00 [ws] ⇄ res ✓ chat.history 1275ms conn=b692348f…3ce5 id=0467d78b…f2c9
+2026-04-22T00:14:15.213+08:00 [ws] ⇄ res ✓ sessions.list 334ms conn=b7a50557…11f2 id=4bb9daf4…9828
+2026-04-22T00:14:15.389+08:00 [ws] ⇄ res ✓ node.list 87ms conn=b7a50557…11f2 id=9397a3cc…6544
+2026-04-22T00:14:15.489+08:00 [ws] ⇄ res ✓ node.list 177ms conn=b692348f…3ce5 id=574fc6b6…be5a
+2026-04-22T00:14:18.653+08:00 [ws] ⇄ res ✓ node.list 69ms conn=b692348f…3ce5 id=0d651752…1788
+2026-04-22T00:14:18.732+08:00 [ws] ⇄ res ✓ node.list 197ms conn=b7a50557…11f2 id=59eac792…a815
+2026-04-22T00:14:23.634+08:00 [ws] ⇄ res ✓ node.list 57ms conn=b7a50557…11f2 id=8dbb551b…2cb8
+2026-04-22T00:14:36.638+08:00 [ws] ⇄ res ✓ sessions.list 526ms conn=b692348f…3ce5 id=c9ac40d1…1591
+2026-04-22T00:14:36.734+08:00 [ws] ⇄ res ✓ chat.history 1024ms conn=b692348f…3ce5 id=3fd501f9…b7ab
+2026-04-22T00:14:37.103+08:00 [ws] ⇄ res ✓ sessions.list 312ms conn=b7a50557…11f2 id=23bd60dc…d646
+2026-04-22T00:14:43.585+08:00 [ws] ⇄ res ✓ node.list 63ms conn=b7a50557…11f2 id=4d4e26cb…cfa9
+2026-04-22T00:14:53.510+08:00 [ws] ⇄ res ✓ sessions.list 399ms conn=b692348f…3ce5 id=1fad859e…2392
+2026-04-22T00:14:53.675+08:00 [ws] ⇄ res ✓ chat.history 1038ms conn=b692348f…3ce5 id=7c137b76…60b7
+2026-04-22T00:14:54.033+08:00 [ws] ⇄ res ✓ sessions.list 298ms conn=b7a50557…11f2 id=0218c773…8462
+2026-04-22T00:14:54.642+08:00 [ws] ⇄ res ✓ node.list 512ms conn=b7a50557…11f2 id=daf2a1e5…627b
+2026-04-22T00:15:11.633+08:00 [ws] ⇄ res ✓ sessions.list 417ms conn=b692348f…3ce5 id=2d31024d…7579
+2026-04-22T00:15:11.832+08:00 [ws] ⇄ res ✓ chat.history 975ms conn=b692348f…3ce5 id=9f75100a…d5b5
+2026-04-22T00:15:12.773+08:00 [ws] ⇄ res ✓ sessions.list 870ms conn=b7a50557…11f2 id=f7d1218a…63f9
+2026-04-22T00:15:14.181+08:00 [ws] ⇄ res ✓ node.list 75ms conn=b7a50557…11f2 id=481dfd6e…714a
+2026-04-22T00:15:34.734+08:00 [ws] ⇄ res ✓ sessions.list 579ms conn=b692348f…3ce5 id=4bea9e81…f801
+2026-04-22T00:15:34.887+08:00 [ws] ⇄ res ✓ chat.history 1376ms conn=b692348f…3ce5 id=6759ac61…a0a9
+2026-04-22T00:15:35.447+08:00 [ws] ⇄ res ✓ sessions.list 478ms conn=b7a50557…11f2 id=d11c9766…faa5
+2026-04-22T00:15:35.680+08:00 [ws] ⇄ res ✓ node.list 134ms conn=b7a50557…11f2 id=1044ec33…47a5
+2026-04-22T00:15:47.139+08:00 [ws] ⇄ res ✓ sessions.list 315ms conn=b692348f…3ce5 id=c9b5a236…a6cb
+2026-04-22T00:15:47.240+08:00 [ws] ⇄ res ✓ chat.history 758ms conn=b692348f…3ce5 id=4b665a94…ddca
+2026-04-22T00:15:47.714+08:00 [ws] ⇄ res ✓ sessions.list 383ms conn=b7a50557…11f2 id=562f6a00…0c41
+2026-04-22T00:15:53.715+08:00 [ws] ⇄ res ✓ node.list 128ms conn=b7a50557…11f2 id=097e9e8c…af02
+2026-04-22T00:15:59.063+08:00 [ws] ⇄ res ✓ node.list 114ms conn=b7a50557…11f2 id=b89fa663…9771
+2026-04-22T00:16:05.860+08:00 [ws] ⇄ res ✓ sessions.list 400ms conn=b692348f…3ce5 id=877130a6…8422
+2026-04-22T00:16:06.009+08:00 [ws] ⇄ res ✓ chat.history 822ms conn=b692348f…3ce5 id=e33fed4b…4e4d
+2026-04-22T00:16:06.279+08:00 [ws] ⇄ res ✓ sessions.list 222ms conn=b7a50557…11f2 id=2ae331e4…f198
+2026-04-22T00:16:08.581+08:00 [ws] ⇄ res ✓ node.list 52ms conn=b7a50557…11f2 id=b8b7a453…7459
+2026-04-22T00:16:15.887+08:00 [ws] ⇄ res ✓ node.list 1243ms conn=b7a50557…11f2 id=d9833829…c872
+2026-04-22T00:16:26.781+08:00 [ws] ⇄ res ✓ sessions.list 329ms conn=b692348f…3ce5 id=2bf7613a…f158
+2026-04-22T00:16:26.874+08:00 [ws] ⇄ res ✓ chat.history 761ms conn=b692348f…3ce5 id=f5649b41…24ec
+2026-04-22T00:16:27.139+08:00 [ws] ⇄ res ✓ sessions.list 224ms conn=b7a50557…11f2 id=fa7ebb61…9bf4
+2026-04-22T00:16:27.958+08:00 [ws] ⇄ res ✓ node.list 54ms conn=b692348f…3ce5 id=8c9a1496…0bf2
+2026-04-22T00:16:40.064+08:00 [ws] ⇄ res ✓ sessions.list 414ms conn=b692348f…3ce5 id=0e24a0d3…39f8
+2026-04-22T00:16:40.147+08:00 [ws] ⇄ res ✓ chat.history 1101ms conn=b692348f…3ce5 id=70a21954…dd2c
+2026-04-22T00:16:40.452+08:00 [ws] ⇄ res ✓ sessions.list 255ms conn=b7a50557…11f2 id=5e850b6b…df88
+2026-04-22T00:16:40.555+08:00 [ws] ⇄ res ✓ node.list 2605ms conn=b692348f…3ce5 id=7fc55683…d5be
+2026-04-22T00:17:00.550+08:00 [ws] ⇄ res ✓ sessions.list 578ms conn=b692348f…3ce5 id=3e0c0ac7…c16e
+2026-04-22T00:17:00.730+08:00 [ws] ⇄ res ✓ chat.history 1227ms conn=b692348f…3ce5 id=a5ae31a0…2cec
+2026-04-22T00:17:01.153+08:00 [ws] ⇄ res ✓ sessions.list 311ms conn=b7a50557…11f2 id=d6db1dbc…a12e
+2026-04-22T00:17:14.734+08:00 [ws] ⇄ res ✓ sessions.list 360ms conn=b692348f…3ce5 id=bae1ccf0…fbc2
+2026-04-22T00:17:14.879+08:00 [ws] ⇄ res ✓ chat.history 998ms conn=b692348f…3ce5 id=22e905f4…725e
+2026-04-22T00:17:15.139+08:00 [ws] ⇄ res ✓ sessions.list 226ms conn=b7a50557…11f2 id=e8351146…72fc
+2026-04-22T00:17:15.231+08:00 [ws] ⇄ res ✓ node.list 457ms conn=b692348f…3ce5 id=84bc0dae…d772
+2026-04-22T00:17:25.711+08:00 [ws] ⇄ res ✓ sessions.list 339ms conn=b692348f…3ce5 id=bd841d62…5d05
+2026-04-22T00:17:25.872+08:00 [ws] ⇄ res ✓ chat.history 918ms conn=b692348f…3ce5 id=abe45acb…4af0
+2026-04-22T00:17:26.182+08:00 [ws] ⇄ res ✓ sessions.list 240ms conn=b7a50557…11f2 id=8df0432e…b8b6
+2026-04-22T00:17:50.654+08:00 [ws] ⇄ res ✓ sessions.list 400ms conn=b692348f…3ce5 id=bca9b505…71be
+2026-04-22T00:17:50.737+08:00 [ws] ⇄ res ✓ chat.history 862ms conn=b692348f…3ce5 id=36108002…8ded
+2026-04-22T00:17:51.142+08:00 [ws] ⇄ res ✓ sessions.list 342ms conn=b7a50557…11f2 id=ba3e402b…c438
+2026-04-22T00:17:53.620+08:00 [ws] ⇄ res ✓ node.list 55ms conn=b692348f…3ce5 id=61b19b4a…0ab7
+2026-04-22T00:18:19.970+08:00 [ws] ⇄ res ✓ sessions.list 948ms conn=b692348f…3ce5 id=85d622c4…9c56
+2026-04-22T00:18:20.213+08:00 [ws] ⇄ res ✓ chat.history 2015ms conn=b692348f…3ce5 id=e48b7d69…cb05
+2026-04-22T00:18:21.762+08:00 [ws] ⇄ res ✓ sessions.list 1444ms conn=b7a50557…11f2 id=583688fa…f1d0
+2026-04-22T00:18:22.170+08:00 [ws] ⇄ res ✓ node.list 215ms conn=b692348f…3ce5 id=0bc4e0ce…1abe
+2026-04-22T00:18:29.165+08:00 [ws] ⇄ res ✓ node.list 285ms conn=b692348f…3ce5 id=c804c359…79e9
+2026-04-22T00:18:36.379+08:00 [ws] ⇄ res ✓ sessions.list 835ms conn=b692348f…3ce5 id=8ee6aa6f…dcaa
+2026-04-22T00:18:36.598+08:00 [ws] ⇄ res ✓ chat.history 1903ms conn=b692348f…3ce5 id=34ce5282…5650
+2026-04-22T00:18:37.730+08:00 [ws] ⇄ res ✓ sessions.list 1020ms conn=b7a50557…11f2 id=358047c1…f523
+2026-04-22T00:18:58.075+08:00 [ws] ⇄ res ✓ sessions.list 439ms conn=b692348f…3ce5 id=30312245…3949
+2026-04-22T00:18:58.197+08:00 [ws] ⇄ res ✓ chat.history 1282ms conn=b692348f…3ce5 id=3adb1c15…183c
+2026-04-22T00:18:58.730+08:00 [ws] ⇄ res ✓ sessions.list 448ms conn=b7a50557…11f2 id=c144e0a3…4ef4
+2026-04-22T00:19:05.508+08:00 [ws] ⇄ res ✓ sessions.list 363ms conn=b692348f…3ce5 id=1252a8cf…216e
+2026-04-22T00:19:05.610+08:00 [ws] ⇄ res ✓ chat.history 767ms conn=b692348f…3ce5 id=f9dfcea0…202e
+2026-04-22T00:19:05.859+08:00 [ws] ⇄ res ✓ sessions.list 221ms conn=b7a50557…11f2 id=e1d80955…16e0
+2026-04-22T00:19:23.380+08:00 [ws] ⇄ res ✓ sessions.list 272ms conn=b692348f…3ce5 id=504fb18f…fa14
+2026-04-22T00:19:23.449+08:00 [ws] ⇄ res ✓ chat.history 716ms conn=b692348f…3ce5 id=d121f3f9…9dd6
+2026-04-22T00:19:23.720+08:00 [ws] ⇄ res ✓ sessions.list 217ms conn=b7a50557…11f2 id=5d7854fc…dc2d
+2026-04-22T00:19:30.590+08:00 [ws] ⇄ res ✓ node.list 67ms conn=b7a50557…11f2 id=2d4d7af8…3048
+2026-04-22T00:19:30.650+08:00 [ws] ⇄ res ✓ node.list 118ms conn=b692348f…3ce5 id=6ab75ee9…3b8a
+2026-04-22T00:19:59.246+08:00 [ws] ⇄ res ✓ sessions.list 172ms conn=b692348f…3ce5 id=5049cd4b…5c4e
+2026-04-22T00:19:59.303+08:00 [ws] ⇄ res ✓ chat.history 384ms conn=b692348f…3ce5 id=767f3125…ad3c
+2026-04-22T00:19:59.508+08:00 [ws] ⇄ res ✓ sessions.list 180ms conn=b7a50557…11f2 id=8c276ad6…d872
+2026-04-22T00:20:27.972+08:00 [ws] ⇄ res ✓ node.list 65ms conn=b692348f…3ce5 id=d5ea928e…8922
+2026-04-22T00:21:04.679+08:00 [ws] ⇄ res ✓ sessions.list 299ms conn=b692348f…3ce5 id=486d955d…feb4
+2026-04-22T00:21:04.775+08:00 [ws] ⇄ res ✓ chat.history 615ms conn=b692348f…3ce5 id=e9a82d22…8a45
+2026-04-22T00:21:05.109+08:00 [ws] ⇄ res ✓ sessions.list 289ms conn=b7a50557…11f2 id=4b66e935…9a3f
+2026-04-22T00:21:27.951+08:00 [ws] ⇄ res ✓ node.list 55ms conn=b692348f…3ce5 id=c88b8e74…93b7
+2026-04-22T00:21:42.970+08:00 [ws] ⇄ res ✓ node.list 60ms conn=b692348f…3ce5 id=8db41c64…bc63
+2026-04-22T00:22:12.994+08:00 [ws] ⇄ res ✓ node.list 60ms conn=b692348f…3ce5 id=a014aa58…30c7
+2026-04-22T00:22:22.962+08:00 [ws] ⇄ res ✓ node.list 53ms conn=b692348f…3ce5 id=ce234410…d75c
+2026-04-22T00:22:27.955+08:00 [ws] ⇄ res ✓ node.list 50ms conn=b692348f…3ce5 id=f4b4ab4d…34a9
+2026-04-22T00:22:32.989+08:00 [ws] ⇄ res ✓ node.list 79ms conn=b692348f…3ce5 id=0f114fac…d6f7
+2026-04-22T00:22:46.083+08:00 [ws] ⇄ res ✓ sessions.list 388ms conn=b7a50557…11f2 id=ba1c15ec…5007
+2026-04-22T00:22:46.769+08:00 [ws] ⇄ res ✓ sessions.list 298ms conn=b692348f…3ce5 id=70c22567…ee64
+2026-04-22T00:22:46.830+08:00 [ws] ⇄ res ✓ chat.history 699ms conn=b692348f…3ce5 id=9f13263a…6b4e
+2026-04-22T00:23:07.981+08:00 [ws] ⇄ res ✓ node.list 50ms conn=b692348f…3ce5 id=038cfe3c…2c78
+2026-04-22T00:23:57.972+08:00 [ws] ⇄ res ✓ node.list 55ms conn=b692348f…3ce5 id=1b09eb66…0b40
+2026-04-22T00:24:07.960+08:00 [ws] ⇄ res ✓ node.list 54ms conn=b692348f…3ce5 id=95c3881d…db3f
+2026-04-22T00:24:27.980+08:00 [ws] ⇄ res ✓ node.list 61ms conn=b692348f…3ce5 id=5dfe0bd1…8c76
+2026-04-22T00:24:30.580+08:00 [ws] ⇄ res ✓ node.list 64ms conn=b7a50557…11f2 id=ca59a561…6cc6
+2026-04-22T00:25:00.092+08:00 [ws] ⇄ res ✓ sessions.list 179ms conn=b692348f…3ce5 id=cd3481ae…d48c
+2026-04-22T00:25:00.173+08:00 [ws] ⇄ res ✓ chat.history 402ms conn=b692348f…3ce5 id=0c8bd388…f4cd
+2026-04-22T00:25:00.394+08:00 [ws] ⇄ res ✓ sessions.list 192ms conn=b7a50557…11f2 id=bfe74abf…db0c
+2026-04-22T00:25:13.380+08:00 [ws] ⇄ res ✓ sessions.list 596ms conn=b692348f…3ce5 id=817a9999…bb4b
+2026-04-22T00:25:13.454+08:00 [ws] ⇄ res ✓ chat.history 1274ms conn=b692348f…3ce5 id=b761426c…dd39
+2026-04-22T00:25:14.235+08:00 [ws] ⇄ res ✓ sessions.list 760ms conn=b7a50557…11f2 id=8547cd27…a048
+2026-04-22T00:25:14.623+08:00 [ws] ⇄ res ✓ node.list 105ms conn=b692348f…3ce5 id=ceb48f5d…a5f5
+2026-04-22T00:25:28.231+08:00 [ws] ⇄ res ✓ sessions.list 237ms conn=b692348f…3ce5 id=d65d172d…5c07
+2026-04-22T00:25:28.296+08:00 [ws] ⇄ res ✓ chat.history 556ms conn=b692348f…3ce5 id=f45dad29…c37b
+2026-04-22T00:25:28.451+08:00 [ws] ⇄ res ✓ sessions.list 125ms conn=b7a50557…11f2 id=b71eb001…b010
+2026-04-22T00:25:43.378+08:00 [ws] ⇄ res ✓ sessions.list 105ms conn=b692348f…3ce5 id=820ce5b9…a0be
+2026-04-22T00:25:43.408+08:00 [ws] ⇄ res ✓ chat.history 250ms conn=b692348f…3ce5 id=5ec9f42e…1aff
+2026-04-22T00:25:43.522+08:00 [ws] ⇄ res ✓ sessions.list 101ms conn=b7a50557…11f2 id=c63778bc…de73
+2026-04-22T00:26:55.158+08:00 [ws] ⇄ res ✓ sessions.list 180ms conn=b692348f…3ce5 id=022a9a4c…274d
+2026-04-22T00:26:55.188+08:00 [ws] ⇄ res ✓ chat.history 334ms conn=b692348f…3ce5 id=75f00895…6ead
+2026-04-22T00:26:55.274+08:00 [ws] ⇄ res ✓ sessions.list 68ms conn=b7a50557…11f2 id=4bf723b4…f10a
+2026-04-22T00:27:05.220+08:00 [ws] ⇄ res ✓ sessions.list 144ms conn=b692348f…3ce5 id=8021acc8…d435
+2026-04-22T00:27:05.246+08:00 [ws] ⇄ res ✓ chat.history 359ms conn=b692348f…3ce5 id=74833fbc…5d76
+2026-04-22T00:27:05.355+08:00 [ws] ⇄ res ✓ sessions.list 100ms conn=b7a50557…11f2 id=dec86ee8…4299
+2026-04-22T00:27:21.670+08:00 [ws] ⇄ res ✓ sessions.list 118ms conn=b7a50557…11f2 id=8f10a308…0614
+2026-04-22T00:27:21.975+08:00 [ws] ⇄ res ✓ sessions.list 158ms conn=b692348f…3ce5 id=dbf55747…adac
+2026-04-22T00:27:21.998+08:00 [ws] ⇄ res ✓ chat.history 311ms conn=b692348f…3ce5 id=f4c62c31…9125
+2026-04-22T00:27:29.709+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=b7a50557-18fc-4941-93cf-e5c8151611f2
+2026-04-22T00:27:29.748+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=b692348f-33cc-48d0-a47f-7e31e25f3ce5
+2026-04-22T00:27:30.557+08:00 [ws] webchat connected conn=a1ddba4b-935c-4d2e-8f88-b61de41090db remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-22T00:27:31.247+08:00 [ws] ⇄ res ✓ sessions.list 285ms conn=a1ddba4b…90db id=834c0990…7447
+2026-04-22T00:27:38.672+08:00 [ws] ⇄ res ✓ commands.list 7415ms conn=a1ddba4b…90db id=d34fd827…ae84
+2026-04-22T00:27:38.704+08:00 [ws] ⇄ res ✓ chat.history 7977ms conn=a1ddba4b…90db id=0d889d2e…5d37
+2026-04-22T00:27:38.786+08:00 [ws] ⇄ res ✓ models.list 7507ms conn=a1ddba4b…90db id=5c88f05f…c5ef
+2026-04-22T00:27:39.188+08:00 [ws] ⇄ res ✓ node.list 8476ms conn=a1ddba4b…90db id=dbbd72ab…6d15
+2026-04-22T00:27:39.221+08:00 [ws] ⇄ res ✓ device.pair.list 8495ms conn=a1ddba4b…90db id=15af4f88…d8e1
+2026-04-22T00:28:06.940+08:00 [ws] webchat connected conn=3d9b279d-9bed-4e76-838b-662858d6291d remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-22T00:28:07.552+08:00 [ws] ⇄ res ✓ sessions.list 307ms conn=3d9b279d…291d id=5ed3759a…77cc
+2026-04-22T00:28:16.101+08:00 [ws] ⇄ res ✓ commands.list 8509ms conn=3d9b279d…291d id=51d0b78c…4ada
+2026-04-22T00:28:16.153+08:00 [ws] ⇄ res ✓ chat.history 9100ms conn=3d9b279d…291d id=6fe73296…0030
+2026-04-22T00:28:16.281+08:00 [ws] ⇄ res ✓ models.list 8680ms conn=3d9b279d…291d id=4a72aeda…23d5
+2026-04-22T00:28:16.477+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=a1ddba4b-935c-4d2e-8f88-b61de41090db
+2026-04-22T00:28:16.627+08:00 [ws] ⇄ res ✓ node.list 9582ms conn=3d9b279d…291d id=2ed55f98…0646
+2026-04-22T00:28:16.656+08:00 [ws] ⇄ res ✓ device.pair.list 9611ms conn=3d9b279d…291d id=bad06d4c…e4fb
+2026-04-22T00:29:11.722+08:00 [ws] ⇄ res ✓ chat.history 399ms conn=3d9b279d…291d id=9d4c0f59…3d39
+2026-04-22T00:29:11.957+08:00 [ws] ⇄ res ✓ sessions.list 202ms conn=3d9b279d…291d id=3bb56525…93f3
+2026-04-22T00:30:14.097+08:00 [ws] ⇄ res ✓ chat.history 293ms conn=3d9b279d…291d id=cfaad771…91db
+2026-04-22T00:30:14.312+08:00 [ws] ⇄ res ✓ sessions.list 180ms conn=3d9b279d…291d id=f8531810…d6b2
+2026-04-22T00:46:27.565+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=3d9b279d-9bed-4e76-838b-662858d6291d
+2026-04-22T01:12:52.972+08:00 [agent/embedded] auto-compaction succeeded for minimax/MiniMax-M2.7; retrying prompt
+2026-04-22T02:27:11.841+08:00 [ws] webchat connected conn=bef433f3-d024-4a4a-8ebe-ffe89c7437d2 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-22T02:27:11.908+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=bef433f3-d024-4a4a-8ebe-ffe89c7437d2
+2026-04-22T02:27:11.952+08:00 [ws] webchat connected conn=70698b68-dccf-4e4a-848e-cb02ce312307 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-22T02:45:59.628+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=70698b68-dccf-4e4a-848e-cb02ce312307
+2026-04-22T03:06:04.691+08:00 [ws] webchat connected conn=a9fa3ef4-413d-44aa-a637-27f5ac6f7854 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-22T03:06:04.754+08:00 [ws] webchat disconnected code=1005 reason=n/a conn=a9fa3ef4-413d-44aa-a637-27f5ac6f7854
+2026-04-22T03:06:04.786+08:00 [ws] webchat connected conn=12d7f622-4ed3-4a16-9c0d-f42ccb840c8f remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-22T03:25:27.115+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=12d7f622-4ed3-4a16-9c0d-f42ccb840c8f
+2026-04-22T05:58:04.397+08:00 [ws] webchat connected conn=e6f19e81-1118-468c-a77e-a703676aaa39 remote=172.19.0.1 client=openclaw-control-ui webchat v2026.4.14
+2026-04-22T05:58:05.703+08:00 [ws] ⇄ res ✓ sessions.list 232ms conn=e6f19e81…aa39 id=f6b03534…9259
+2026-04-22T05:58:08.273+08:00 [ws] ⇄ res ✓ commands.list 2551ms conn=e6f19e81…aa39 id=aab0f0c7…c43a
+2026-04-22T05:58:08.285+08:00 [ws] ⇄ res ✓ chat.history 3765ms conn=e6f19e81…aa39 id=7e545501…d7e6
+2026-04-22T05:58:08.319+08:00 [ws] ⇄ res ✓ models.list 2596ms conn=e6f19e81…aa39 id=319cf0cb…7685
+2026-04-22T05:58:08.338+08:00 [ws] ⇄ res ✓ node.list 3828ms conn=e6f19e81…aa39 id=6d7fb1eb…19f1
+2026-04-22T05:58:08.343+08:00 [ws] ⇄ res ✓ device.pair.list 3829ms conn=e6f19e81…aa39 id=d78ae14c…c3c0
+2026-04-22T05:59:08.309+08:00 [ws] webchat disconnected code=1006 reason=n/a conn=e6f19e81-1118-468c-a77e-a703676aaa39
+2026-04-22T06:19:17.861+08:00 [info]: [ '[ws]', 'reconnect' ]
+2026-04-22T06:35:05.801+08:00 [info]: [ '[ws]', 'reconnect' ]
+2026-04-22T07:19:51.726+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_a1075829be1b03f1a41ff11b7b56e7f4 (group)
+2026-04-22T07:19:51.734+08:00 [feishu] feishu[devmate]: group session scope=group, peer=oc_a1075829be1b03f1a41ff11b7b56e7f4
+2026-04-22T07:19:51.740+08:00 [feishu] feishu[devmate]: Feishu[devmate] message in group oc_a1075829be1b03f1a41ff11b7b56e7f4: 你现在工作进展
+2026-04-22T07:19:51.757+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:feishu:group:oc_a1075829be1b03f1a41ff11b7b56e7f4)
+2026-04-22T07:20:09.650+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-22T07:20:23.229+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_f77396943e11f788f00ce3f9ca534e82 (p2p)
+2026-04-22T07:20:23.234+08:00 [feishu] feishu[devmate]: Feishu[devmate] DM from ou_37c6b02bb652b85c0e2fa715435f1858: 测试消息
+2026-04-22T07:20:23.246+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:main)
+2026-04-22T07:20:37.592+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-22T07:21:04.437+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_a1075829be1b03f1a41ff11b7b56e7f4 (group)
+2026-04-22T07:21:04.444+08:00 [feishu] feishu[devmate]: group session scope=group, peer=oc_a1075829be1b03f1a41ff11b7b56e7f4
+2026-04-22T07:21:04.448+08:00 [feishu] feishu[devmate]: Feishu[devmate] message in group oc_a1075829be1b03f1a41ff11b7b56e7f4: PKGM-Web进展情况
+2026-04-22T07:21:04.465+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:feishu:group:oc_a1075829be1b03f1a41ff11b7b56e7f4)
+2026-04-22T07:21:45.064+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631356744949943237, messageId=om_x100b51b4264184a8b35ac1c1736a7e6
+2026-04-22T07:21:46.052+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631356744949943237
+2026-04-22T07:21:46.057+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-22T07:23:18.179+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_a1075829be1b03f1a41ff11b7b56e7f4 (group)
+2026-04-22T07:23:18.189+08:00 [feishu] feishu[devmate]: group session scope=group, peer=oc_a1075829be1b03f1a41ff11b7b56e7f4
+2026-04-22T07:23:18.195+08:00 [feishu] feishu[devmate]: Feishu[devmate] message in group oc_a1075829be1b03f1a41ff11b7b56e7f4: 给出phase3剩余的工作内容
+2026-04-22T07:23:18.205+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:feishu:group:oc_a1075829be1b03f1a41ff11b7b56e7f4)
+2026-04-22T07:24:07.087+08:00 [feishu] feishu[devmate] Started streaming: cardId=7631357355234905031, messageId=om_x100b51b43fa10ce0b30b27f762ee324
+2026-04-22T07:24:08.061+08:00 [feishu] feishu[devmate] Closed streaming: cardId=7631357355234905031
+2026-04-22T07:24:08.065+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=true, replies=1)
+2026-04-22T07:34:32.829+08:00 [feishu] feishu[devmate]: received message from ou_37c6b02bb652b85c0e2fa715435f1858 in oc_a1075829be1b03f1a41ff11b7b56e7f4 (group)
+2026-04-22T07:34:32.833+08:00 [feishu] feishu[devmate]: group session scope=group, peer=oc_a1075829be1b03f1a41ff11b7b56e7f4
+2026-04-22T07:34:32.840+08:00 [feishu] feishu[devmate]: Feishu[devmate] message in group oc_a1075829be1b03f1a41ff11b7b56e7f4: 请完成phase3剩余工作
+2026-04-22T07:34:32.851+08:00 [feishu] feishu[devmate]: dispatching to agent (session=agent:main:feishu:group:oc_a1075829be1b03f1a41ff11b7b56e7f4)
+2026-04-22T07:36:32.775+08:00 [feishu] feishu[devmate]: dispatch complete (queuedFinal=false, replies=0)

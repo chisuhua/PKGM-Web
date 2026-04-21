@@ -79,6 +79,19 @@ function getUserDB(username) {
                 modified=excluded.modified
         `);
         db._delete = db.prepare('DELETE FROM documents WHERE path = ?');
+        db._fts_upsert = db.prepare(`
+            INSERT OR REPLACE INTO documents_fts(path, title, content_seg, tags, type)
+            VALUES (@path, @title, @content_seg, @tags, @type)
+        `);
+        db._fts_delete = db.prepare('DELETE FROM documents_fts WHERE path = ?');
+
+        // 迁移：检查 FTS 表是否存在，不存在则创建
+        try {
+            db.exec(`CREATE VIRTUAL TABLE IF NOT EXISTS documents_fts USING fts5(
+                path UNINDEXED, title, content_seg, tags UNINDEXED, type UNINDEXED,
+                tokenize='porter'
+            )`);
+        } catch (e) { /* 忽略 */ }
 
         dbCache.set(username, db);
     }
@@ -157,6 +170,7 @@ function flush() {
                 for (const [p, action] of rows) {
                     if (action === 'delete') {
                         db._delete.run(p);
+                        db._fts_delete.run(p);
                         console.log(`  [${user}] Deleted: ${p}`);
                     } else {
                         // 检查 status: writing → 跳过
@@ -167,6 +181,7 @@ function flush() {
                                 continue;
                             }
                             db._upsert.run(row);
+                            db._fts_upsert.run(row);
                         } catch (err) {
                             console.error(`  [${user}] Parse error: ${p}`, err.message);
                         }
@@ -309,7 +324,14 @@ function startHttpServer() {
                 let results;
                 try {
                     const seg = jieba.cut(query, true).join(' ');
-                    results = db.prepare(`SELECT path, title, content_seg, type, modified FROM documents WHERE content_seg MATCH ? ORDER BY rank LIMIT 20`).all(seg);
+                    // FTS5: search the FTS virtual table, not the base documents table
+                    results = db.prepare(`
+                        SELECT fts.path, fts.title, fts.content_seg, fts.type
+                        FROM documents_fts fts
+                        WHERE documents_fts MATCH ?
+                        ORDER BY rank
+                        LIMIT 20
+                    `).all(seg);
                 } catch (e1) {
                     console.log(`[Indexer] FTS5 match failed, using LIKE: ${e1.message}`);
                     const likePat = `%${query}%`;
