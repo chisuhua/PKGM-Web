@@ -323,7 +323,9 @@ function startHttpServer() {
                 // 尝试 FTS5 MATCH，失败则用 LIKE fallback
                 let results;
                 try {
-                    const seg = jieba.cut(query, true).join(' ');
+                    // Use prefix wildcard (*) to handle Porter stemmer case mismatch
+                    // e.g. 'recover' -> 'recover*' matches both 'recover' and 'recovery'
+                    const seg = jieba.cut(query, true).map(t => t + '*').join(' ');
                     // FTS5: search the FTS virtual table, not the base documents table
                     results = db.prepare(`
                         SELECT 
