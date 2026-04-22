@@ -333,7 +333,7 @@ function startHttpServer() {
                             fts.type
                         FROM documents_fts fts
                         WHERE documents_fts MATCH ?
-                        ORDER BY rank
+                        ORDER BY bm25(documents_fts)
                         LIMIT 20
                     `).all(seg);
                 } catch (e1) {
