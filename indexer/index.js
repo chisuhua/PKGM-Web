@@ -89,7 +89,7 @@ function getUserDB(username) {
         try {
             db.exec(`CREATE VIRTUAL TABLE IF NOT EXISTS documents_fts USING fts5(
                 path UNINDEXED, title, content_seg, tags UNINDEXED, type UNINDEXED,
-                tokenize='porter'
+                tokenize='unicode61 remove_diacritics 1'
             )`);
         } catch (e) { /* 忽略 */ }
 
