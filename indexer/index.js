@@ -30,31 +30,29 @@ const dbCache = new Map();
 function getUserDB(username) {
     if (!dbCache.has(username)) {
         const dbPath = path.join(USERS_ROOT, username, 'meta', 'index.db');
-        // 如果 DB 文件不存在或为空，先初始化（预创建表结构）
-        // 注意：NFS 禁用 WAL，使用 DELETE 日志模式避免 .wal/.shm 文件问题
-        const needInit = !fs.existsSync(dbPath) || fs.statSync(dbPath).size === 0;
-        if (needInit) {
-            console.log(`[Indexer] Initializing DB for ${username}: ${dbPath}`);
-            fs.mkdirSync(path.dirname(dbPath), { recursive: true });
-            const init = new Database(dbPath);
-            init.exec(`
-                PRAGMA journal_mode = DELETE;
-                PRAGMA synchronous = NORMAL;
-                PRAGMA busy_timeout = 5000;
-                CREATE TABLE IF NOT EXISTS documents (
-                    path TEXT PRIMARY KEY,
-                    title TEXT,
-                    content TEXT,
-                    content_seg TEXT,
-                    tags TEXT,
-                    type TEXT,
-                    status TEXT,
-                    created TEXT,
-                    modified TEXT
-                );
-            `);
-            init.close();
-        }
+        // 初始化/确保表结构存在（幂等操作）
+        const init = new Database(dbPath);
+        init.exec(`
+            PRAGMA journal_mode = DELETE;
+            PRAGMA synchronous = NORMAL;
+            PRAGMA busy_timeout = 5000;
+            CREATE TABLE IF NOT EXISTS documents (
+                path TEXT PRIMARY KEY,
+                title TEXT,
+                content TEXT,
+                content_seg TEXT,
+                tags TEXT,
+                type TEXT,
+                status TEXT,
+                created TEXT,
+                modified TEXT
+            );
+            CREATE VIRTUAL TABLE IF NOT EXISTS documents_fts USING fts5(
+                path UNINDEXED, title, content_seg, tags UNINDEXED, type UNINDEXED,
+                tokenize='porter'
+            );
+        `);
+        init.close();
         // 后续访问：OPEN 不创建新连接，检测并转换非 WAL DB
         const db = new Database(dbPath, { timeout: 5000 });
         const mode = db.pragma('journal_mode', { simple: true });
