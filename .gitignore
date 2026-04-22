@@ -6,6 +6,8 @@
 .env.production
 .env.*.local
 
+supervisor_log/
+
 # Node modules
 node_modules/
 npm-debug.log*
