@@ -1,6 +1,7 @@
 /**
- * API: GET /api/doc?user=...&path=...
+ * API: GET /api/doc?path=...
  * 返回单篇文档（从 Indexer HTTP API 获取）
+ * 用户从 x-authenticated-user header 获取
  */
 import { NextRequest, NextResponse } from 'next/server';
 
@@ -10,10 +11,13 @@ const INDEXER_PORT = process.env.INDEXER_PORT || '3004';
 export const dynamic = 'force-dynamic';
 
 export async function GET(req: NextRequest) {
-    const username = req.nextUrl.searchParams.get('user');
+    const username = req.headers.get('x-authenticated-user');
     const docPath = req.nextUrl.searchParams.get('path');
 
-    if (!username || !docPath) {
+    if (!username) {
+        return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    }
+    if (!docPath) {
         return NextResponse.json({ error: 'Missing params' }, { status: 400 });
     }
 

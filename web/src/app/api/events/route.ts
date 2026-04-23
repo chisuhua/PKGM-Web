@@ -1,13 +1,14 @@
 import { NextRequest } from 'next/server';
+import { verifyToken } from '@/lib/auth';
 
-// SSE 客户端集合（多实例部署时需替换为 Redis Pub/Sub）
 const clients = new Set<ReadableStreamDefaultController>();
 
-/**
- * Indexer 回调端点
- * POST /api/events — 触发 SSE 推送
- */
 export async function POST(req: NextRequest) {
+    const indexerSecret = req.headers.get('x-indexer-secret');
+    if (indexerSecret !== process.env.INDEXER_SECRET) {
+        return new Response('Forbidden', { status: 403 });
+    }
+
     try {
         const data = await req.json();
         const msg = `data: ${JSON.stringify(data)}\n\n`;
@@ -23,18 +24,20 @@ export async function POST(req: NextRequest) {
     }
 }
 
-/**
- * SSE 客户端订阅端点
- * GET /api/events — 浏览器 SSE 连接
- */
 export async function GET(req: NextRequest) {
+    const token = req.cookies.get('pkgm-token')?.value
+        || req.headers.get('authorization')?.replace('Bearer ', '');
+
+    if (!token || !(await verifyToken(token))) {
+        return new Response('Unauthorized', { status: 401 });
+    }
+
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
         start(controller) {
             clients.add(controller);
             let closed = false;
 
-            // 心跳保持连接
             const heartbeat = setInterval(() => {
                 if (closed) { clearInterval(heartbeat); return; }
                 try {
@@ -46,7 +49,6 @@ export async function GET(req: NextRequest) {
                 }
             }, 25000);
 
-            // 客户端断开时清理
             req.signal.addEventListener('abort', () => {
                 closed = true;
                 clearInterval(heartbeat);
@@ -54,7 +56,6 @@ export async function GET(req: NextRequest) {
             });
         },
         cancel() {
-            // ReadableStream 被取消时清理
         }
     });
 
