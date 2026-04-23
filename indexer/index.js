@@ -133,12 +133,59 @@ function notifyWeb(username, event) {
         port: WEB_PORT,
         path: '/api/events',
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' }
+        headers: {
+            'Content-Type': 'application/json',
+            'x-indexer-secret': process.env.INDEXER_SECRET || ''
+        }
     }, () => {});
     req.on('error', () => {});
     req.write(payload);
     req.end();
 }
+
+// ============================================================
+// NFS 健康检查
+// ============================================================
+let nfsHealthStatus = 'unknown';
+let lastHealthCheck = 0;
+
+function checkNFSHealth() {
+    const testDir = path.join(USERS_ROOT, '.health_check');
+    const testFile = path.join(testDir, `test_${Date.now()}.tmp`);
+
+    try {
+        if (!fs.existsSync(testDir)) {
+            fs.mkdirSync(testDir, { recursive: true });
+        }
+
+        const content = `health_check_${Date.now()}`;
+        fs.writeFileSync(testFile, content);
+
+        setTimeout(() => {
+            try {
+                const readContent = fs.readFileSync(testFile, 'utf-8');
+                if (readContent === content) {
+                    fs.unlinkSync(testFile);
+                    nfsHealthStatus = 'ok';
+                } else {
+                    nfsHealthStatus = 'degraded';
+                }
+            } catch {
+                nfsHealthStatus = 'degraded';
+            }
+            lastHealthCheck = Date.now();
+        }, 50);
+    } catch (err) {
+        nfsHealthStatus = 'error';
+        lastHealthCheck = Date.now();
+    }
+}
+
+// 启动时执行一次健康检查
+checkNFSHealth();
+
+// 每 5 分钟检查一次
+setInterval(checkNFSHealth, 5 * 60 * 1000);
 
 // ============================================================
 // 全局防抖 + 按用户分组批处理
@@ -254,6 +301,37 @@ console.log(`[Indexer] Web callback: http://${WEB_HOST}:${WEB_PORT}/api/events`)
 
 users.forEach(watchUser);
 
+// 标记已有用户为已监控
+const watchedUsers = new Set();
+users.forEach(u => watchedUsers.add(u));
+
+// ============================================================
+// 动态用户发现（定时轮询 + 增量 watch）
+// ============================================================
+/**
+ * 定时检查新用户，发现新用户后自动启动 chokidar 监控
+ * 轮询间隔可通过 DISCOVERY_INTERVAL_MS 环境变量配置（默认 30 秒）
+ */
+function discoverNewUsers() {
+    const allUsers = discoverUsers();
+    const newUsers = allUsers.filter(u => !watchedUsers.has(u));
+
+    if (newUsers.length > 0) {
+        console.log(`[Indexer] Discovered new user(s): ${newUsers.join(', ')}`);
+        newUsers.forEach(username => {
+            watchedUsers.add(username);
+            watchUser(username);
+        });
+        // 新用户发现后通知 Web 刷新用户列表
+        newUsers.forEach(username => notifyWeb(username, 'update'));
+    }
+}
+
+// 启动定时轮询（默认 30 秒）
+const DISCOVERY_INTERVAL_MS = parseInt(process.env.DISCOVERY_INTERVAL_MS, 10) || 30000;
+setInterval(discoverNewUsers, DISCOVERY_INTERVAL_MS);
+console.log(`[Indexer] Dynamic user discovery: every ${DISCOVERY_INTERVAL_MS / 1000}s`);
+
 // ============================================================
 // HTTP API 服务器（供 Next.js 查询 DB）
 // ============================================================
@@ -268,6 +346,24 @@ function startHttpServer() {
 
         const url = new URL(req.url, `http://localhost:${port}`);
         const pathname = url.pathname;
+
+        // GET /health
+        if (req.method === 'GET' && pathname === '/health') {
+            const health = {
+                status: nfsHealthStatus === 'ok' ? 'healthy' : 'degraded',
+                nfs: {
+                    status: nfsHealthStatus,
+                    lastCheck: lastHealthCheck ? new Date(lastHealthCheck).toISOString() : 'never'
+                },
+                users: discoverUsers().length,
+                watchedUsers: watchedUsers ? watchedUsers.size : 0,
+                uptime: Math.floor(process.uptime())
+            };
+            const statusCode = nfsHealthStatus === 'error' ? 503 : 200;
+            res.writeHead(statusCode, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(health));
+            return;
+        }
 
         // GET /users
         if (req.method === 'GET' && pathname === '/users') {

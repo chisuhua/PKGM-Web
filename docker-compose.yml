@@ -110,7 +110,7 @@ services:
       # 读写挂载用户目录（与 OpenClaw 共享 NAS）
       - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:rw
     env_file:
-      - ./.env  # JWT_SECRET（可选，如果 Indexer 需要验证）
+      - ./.env  # JWT_SECRET, INDEXER_SECRET
     environment:
       - NODE_ENV=production
       - PKGM_USERS_DIR=/workspace/project/PKGM/users
@@ -118,6 +118,41 @@ services:
       - WEB_PORT=3001
       - INDEXER_PORT=3004
       - MULTI_USER=true
+      - DISCOVERY_INTERVAL_MS=15000
+      - INDEXER_SECRET=${INDEXER_SECRET:-default-secret-change-in-production}
+    networks:
+      - pkgm-net
+    deploy:
+      resources:
+        limits:
+          memory: "256m"
+          cpus: "0.5"
+
+  # ============================================
+  # PKGM-Web 前端（Next.js）
+  # ============================================
+  pkgm-web:
+    build:
+      context: /mnt/nas/project/PKGM-Web
+      dockerfile: web/Dockerfile
+    container_name: pkgm-web
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3001"
+    volumes:
+      # 只读挂载所有用户目录
+      - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
+    env_file:
+      - ./.env  # JWT_SECRET, INDEXER_SECRET
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret-change-in-production}
+      - INDEXER_SECRET=${INDEXER_SECRET:-default-secret-change-in-production}
+      - PKGM_USERS_DIR=/workspace/project/PKGM/users
+      - MULTI_USER=true
+      - INDEXER_HOST=pkgm-indexer
+      - INDEXER_PORT=3004
     networks:
       - pkgm-net
     deploy:
