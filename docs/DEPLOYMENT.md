@@ -14,17 +14,26 @@
 docker-compose.yml (统一编排)
 ├── openclaw (my-dev-env:latest)    ← OpenClaw Agent，生成 Markdown
 ├── pkgm-web (Next.js)              ← 前端展示，只读挂载用户目录
-└── pkgm-indexer (Node.js)          ← 索引服务，扫描所有用户
+├── pkgm-indexer (Node.js)          ← 索引服务，扫描所有用户
+└── redis (可选)                    ← 多实例部署时启用 SSE Pub/Sub
+```
+docker-compose.yml (统一编排)
+├── openclaw (my-dev-env:latest)    ← OpenClaw Agent，生成 Markdown
+├── pkgm-web (Next.js)              ← 前端展示，只读挂载用户目录
+├── pkgm-indexer (Node.js)          ← 索引服务，扫描所有用户
+└── redis (可选)                    ← 多实例部署时启用 SSE Pub/Sub
 ```
 
 ### 1.2 数据流向
 
 ```
 用户对话 → OpenClaw → 原子写入 → /PKGM/users/{username}/content/
-                                    ↓ inotify
-                              pkgm-indexer → SQLite (WAL)
-                                    ↓ HTTP POST
-                              pkgm-web → SSE → 浏览器
+                                     ↓ inotify
+                               pkgm-indexer → SQLite (DELETE 模式)
+                                     ↓ HTTP POST
+                               pkgm-web → SSE → 浏览器
+                                              ↑
+                               (多实例时通过 Redis Pub/Sub)
 ```
 
 ---
@@ -97,8 +106,10 @@ services:
       - MULTI_USER=true
       - INDEXER_HOST=pkgm-indexer
       - INDEXER_PORT=3004
+      - REDIS_URL=redis://redis:6379  # 注释掉则使用内存模式（单实例）
     depends_on:
       - pkgm-indexer
+      - redis  # 需要时取消注释
     networks:
       - pkgm-net
     deploy:
@@ -106,6 +117,24 @@ services:
         limits:
           memory: "512m"
           cpus: "1.0"
+
+  # ============================================
+  # Redis（可选，多实例部署时启用）
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: pkgm-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks:
+      - pkgm-net
+    deploy:
+      resources:
+        limits:
+          memory: "128m"
+          cpus: "0.25"
 
   # ============================================
   # PKGM-Web Indexer（索引服务）
@@ -129,6 +158,7 @@ services:
       - WEB_HOST=pkgm-web
       - WEB_PORT=3001
       - INDEXER_PORT=3004
+      - INDEXER_SECRET=${INDEXER_SECRET:-default-secret-change-in-production}
       - MULTI_USER=true
     networks:
       - pkgm-net
@@ -141,7 +171,9 @@ services:
 networks:
   pkgm-net:
     driver: bridge
-```
+
+volumes:
+  redis-data:
 
 ### 2.2 环境变量
 
@@ -149,7 +181,20 @@ networks:
 ```bash
 # JWT_SECRET（部署前必须修改为强随机密钥）
 JWT_SECRET=<生成的安全密钥>
+
+# INDEXER_SECRET（Indexer 回调密钥，与 pkgm-indexer 一致）
+INDEXER_SECRET=<生成的安全密钥>
+
+# REDIS_URL（可选，多实例部署时取消注释）
+# REDIS_URL=redis://redis:6379
 ```
+
+**说明**：
+| 变量 | 必填 | 说明 |
+|------|------|------|
+| `JWT_SECRET` | 是 | JWT 签名密钥，必须是强随机值 |
+| `INDEXER_SECRET` | 是 | Indexer 回调 Web 的密钥，防止恶意触发 |
+| `REDIS_URL` | 否 | 设置后启用 Redis Pub/Sub 模式（多实例部署） |
 
 **OpenClaw 容器内路径映射**：
 | 容器路径 | 宿主机路径 | 说明 |
@@ -171,10 +216,19 @@ ls -la /mnt/nas/project/
 mkdir -p /mnt/nas/project/PKGM/users/{alice,bob}/{content/{daily,uploads,tasks},assets,meta}
 mkdir -p /mnt/nas/project/PKGM/manager/{skills,templates,logs}
 
-# 3. 生成 JWT_SECRET
-openssl rand -base64 32 > /mnt/nas/project/PKGM-Web/.env
-echo "JWT_SECRET=$(cat /mnt/nas/project/PKGM-Web/.env)" >> /mnt/nas/project/PKGM-Web/.env
+# 3. 生成 .env 文件
+cat > /mnt/nas/project/PKGM-Web/.env << 'EOF'
+JWT_SECRET=<在此粘贴生成的密钥>
+INDEXER_SECRET=<在此粘贴生成的密钥>
+# REDIS_URL=redis://redis:6379  # 多实例部署时取消注释
+EOF
 chmod 600 /mnt/nas/project/PKGM-Web/.env
+
+# 4. 生成强随机密钥（替换 <在此粘贴生成的密钥>）
+# JWT_SECRET
+openssl rand -base64 32
+# INDEXER_SECRET
+openssl rand -base64 32
 ```
 
 ### 3.2 启动服务
@@ -205,9 +259,31 @@ docker compose logs --tail=20 pkgm-indexer
 curl http://localhost:3004/users
 # 预期：["alice", "bob"]
 
-# 4. 测试 Web 访问
+# 4. 测试 Indexer 健康检查
+curl http://localhost:3004/health
+# 预期：{"status":"healthy","nfs":{"status":"ok"},...}
+
+# 5. 测试 Indexer 指标
+curl http://localhost:3004/metrics
+# 预期：Prometheus 格式指标
+
+# 6. 测试 Web 健康检查
+curl http://localhost:3001/api/health
+# 预期：{"status":"healthy","checks":{"indexer":"healthy"},...}
+
+# 7. 测试 Web 指标
+curl http://localhost:3001/api/metrics
+# 预期：Prometheus 格式指标
+
+# 8. 测试 Web 访问
 curl http://localhost:3001
 # 预期：HTML 响应或 Next.js 页面
+
+# 9. Redis 验证（如果启用了 REDIS_URL）
+docker compose ps redis
+# 预期：redis 容器 Up
+docker exec pkgm-redis redis-cli ping
+# 预期：PONG
 ```
 
 ---
@@ -476,6 +552,8 @@ echo "[Restore] Completed"
 | 中文搜索无结果 | jieba 未安装 | `docker exec pkgm-indexer npm list @node-rs/jieba` | 重新构建镜像 |
 | SQLite Busy | 并发冲突 | `docker exec pkgm-indexer sqlite3 ... "PRAGMA busy_timeout;"` | 增加 timeout 或重试 |
 | SSE 断开 | 连接超时 | 检查 Nginx 日志 | 调整 proxy_read_timeout |
+| SSE 不更新（多实例） | Redis 未启动 | `docker compose ps redis` | 启动 Redis 或回滚到内存模式 |
+| Redis 连接失败 | REDIS_URL 配置错误 | `docker logs pkgm-web \| grep redis` | 检查 REDIS_URL 格式 |
 | 内存不足 | Indexer 泄漏 | `docker stats pkgm-indexer` | 增加 memory limit |
 
 ### 7.2 深度诊断
@@ -497,6 +575,15 @@ db.close();
 
 # 测试 Indexer API
 curl -v http://localhost:3004/users
+
+# Redis 健康检查
+docker exec pkgm-redis redis-cli ping
+docker exec pkgm-redis redis-cli info memory | grep used_memory_human
+
+# 测试 SSE broker 模式
+docker compose logs pkgm-web | grep "Using"
+# 预期（内存模式）：[SSE] Using in-memory broker
+# 预期（Redis 模式）：[SSE] Using Redis broker
 ```
 
 ---
@@ -510,7 +597,9 @@ curl -v http://localhost:3004/users
 | openclaw | 1.5 | 5.5G | ~5G |
 | pkgm-web | 1.0 | 512M | ~200M |
 | pkgm-indexer | 0.5 | 256M | ~50M |
-| **总计** | **3.0** | **6.2G** | **~5.5G** |
+| redis (可选) | 0.25 | 128M | ~10M |
+| **总计** | **3.25** | **6.4G** | **~5.5G** |
+| **总计（含 Redis）** | **3.5** | **6.5G** | **~5.5G** |
 
 ### B. 扩展方案
 
@@ -532,5 +621,107 @@ pkgm-web:
 
 ---
 
+## 8. 多实例部署（SSE Redis Pub/Sub）
+
+### 8.1 部署模式对比
+
+| 模式 | SSE 实现 | 适用场景 |
+|------|---------|---------|
+| **单实例** | 内存 Set（默认） | 个人使用、小规模部署 |
+| **多实例** | Redis Pub/Sub | 生产环境、水平扩展 |
+
+### 8.2 启用 Redis 模式
+
+**步骤 1：取消注释 Redis 服务**
+
+```bash
+# 编辑 docker-compose.yml
+# 在 pkgm-web 的 depends_on 中添加 redis
+# 在 pkgm-web 的 environment 中添加 REDIS_URL
+```
+
+**步骤 2：重建镜像**
+
+```bash
+cd /mnt/nas/project/PKGM-Web
+docker compose build pkgm-web
+docker compose up -d
+```
+
+**步骤 3：验证**
+
+```bash
+# 检查日志确认使用 Redis broker
+docker compose logs pkgm-web | grep "Using Redis broker"
+# 预期输出：[SSE] Using Redis broker
+
+# 验证 Redis 连接
+docker exec pkgm-redis redis-cli ping
+# 预期：PONG
+```
+
+### 8.3 多实例架构
+
+```
+                    ┌──────────┐
+    Nginx (LB) ────►│ Web 1   │ ──┐
+                    ├──────────┤   │
+                    │ Web 2   │ ──┼──► Redis Pub/Sub
+    Indexer ───────►│ Web N   │ ──┘
+                    └────┬─────┘
+                         │
+                    ┌────▼─────┐
+                    │  Redis   │
+                    └──────────┘
+```
+
+### 8.4 Nginx 负载均衡配置
+
+```nginx
+upstream pkgm-web {
+    # 方式 1：轮询（默认）
+    server 127.0.0.1:3001;
+    server 127.0.0.1:3002;  # 第二个实例
+    keepalive 32;
+
+    # 方式 2：ip_hash（同一用户始终路由到同一实例）
+    # ip_hash;
+    # server 127.0.0.1:3001;
+    # server 127.0.0.1:3002;
+}
+
+# SSE 端点需要长连接
+location ~ ^/docs/([^/]+)/api/events {
+    proxy_pass http://pkgm-web;
+    proxy_http_version 1.1;
+    proxy_buffering off;
+    proxy_cache off;
+    proxy_read_timeout 86400;
+    proxy_send_timeout 86400;
+}
+
+# 复制多个端口
+server {
+    listen 3002;
+    # ... 同 3001 配置
+}
+```
+
+### 8.5 回滚到内存模式
+
+如需回滚到单实例内存模式：
+
+```bash
+# 方式 1：注释掉 REDIS_URL
+# 编辑 .env 或 docker-compose.yml
+# 注释掉 REDIS_URL=redis://redis:6379
+
+# 方式 2：重启即可
+docker compose restart pkgm-web
+# 日志应显示：[SSE] Using in-memory broker
+```
+
+---
+
 *本文档为 PKGM-Web 项目的部署参考，详细架构信息请参见 ARCHITECTURE.md。*
-*上次更新：2026-04-22*
+*上次更新：2026-04-24*

@@ -334,54 +334,36 @@ CREATE VIRTUAL TABLE documents_fts USING fts5(
 
 ### 4.3 Frontmatter 规范
 
-**基础字段**（所有文档类型通用）：
-```yaml
----
-title: "文档标题"
-type: "daily"           # daily | upload | task | wiki
-tags: ["标签 1", "标签 2"]
-status: "completed"     # writing | completed
-source: "cron"          # cron | user-upload | explore-task | wiki-gen
-created: "2026-04-15T08:00:00Z"
-modified: "2026-04-15T09:00:00Z"
----
-```
+**Frontmatter 规范**:
+
+PKGM 系统统一使用 PKGM-Wiki 定义的 Schema，详见：
+
+- [schema.yaml](../../PKGM-Wiki/references/default-configs/schema.yaml) — 完整的实体类型、关系类型、属性定义
+- [Frontmatter 格式规范](../../PKGM-Wiki/references/default-configs/schema.yaml#4-frontmatter-格式规范) — 正确/错误示例
+
+**快速参考**：
+
+| 字段 | 类型 | 必填 | 说明 |
+|------|------|------|------|
+| `title` | string | 是 | 文档标题 |
+| `type` | enum | 是 | `daily` \| `upload` \| `task` \| `wiki` |
+| `status` | enum | 否 | `writing` \| `completed`（默认 `completed`） |
+| `source` | enum | 否 | `cron` \| `user-upload` \| `explore-task` \| `wiki-gen` |
+| `created` | ISO8601 | 是 | 创建时间 |
+| `modified` | ISO8601 | 是 | 修改时间 |
 
 **Wiki 类型扩展字段**（PKGM Wiki 内容专用）：
-```yaml
----
-type: "wiki"
-domain: "D01"           # 知识领域 ID (D01-D12)
-version: 1              # 版本号 (+1 每次更新)
-confidence: 4           # 置信度 1-5
-verification:
-  status: unverified    # unverified | pending | verified | refuted
-lifecycle:
-  status: active        # active | superseded | deprecated | refuted
-relations:
-  depends_on:
-    - "[[关联页面]]"
-  contradicts:
-    - target: "[[对立页面]]"
-      context: "矛盾的具体方面"
----
-```
 
-**状态机规则**：
+Wiki 类型页面的扩展字段参见
+[PKGM-Wiki schema.yaml §3 通用属性（所有实体必须拥有）](../../PKGM-Wiki/references/default-configs/schema.yaml#3-通用属性所有实体必须拥有)。
+
+**状态机规则**:
+
 | status | Indexer 行为 | 说明 |
 |--------|-------------|------|
 | `writing` | **跳过**（不索引） | 流式生成中，可能不完整 |
 | `completed` | **索引** | 生成完毕，可安全读取 |
 | 缺失 | **索引**（向后兼容） | 旧文件默认索引 |
-
-**与 PKGM Schema 对齐**：
-- `domain`: D01-D12 对应 PKGM 知识领域定义
-- `confidence`: 1-5 对应 PKGM 溯源体系
-- `verification.status`: 对应 PKGM 验证状态
-- `lifecycle.status`: 对应 PKGM 生命周期管理
-- `relations`: wikilink 格式，符合 PKGM 图谱关系规范
-
-详细规范参见 [PKGM-Wiki schema.yaml](/workspace/project/PKGM-Wiki/references/default-configs/schema.yaml)。
 
 ---
 
