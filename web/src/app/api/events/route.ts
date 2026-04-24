@@ -1,7 +1,9 @@
 import { NextRequest } from 'next/server';
 import { verifyToken } from '@/lib/auth';
+import { getSSEBroker } from '@/lib/sse-broker';
+import type { IndexerEvent } from '@/lib/sse-broker';
 
-const clients = new Set<ReadableStreamDefaultController>();
+const broker = getSSEBroker();
 
 export async function POST(req: NextRequest) {
     const indexerSecret = req.headers.get('x-indexer-secret');
@@ -11,12 +13,13 @@ export async function POST(req: NextRequest) {
 
     try {
         const data = await req.json();
-        const msg = `data: ${JSON.stringify(data)}\n\n`;
-        const encoded = new TextEncoder().encode(msg);
-        clients.forEach(c => {
-            try { c.enqueue(encoded); } catch { clients.delete(c); }
-        });
-        return new Response(JSON.stringify({ sent: clients.size }), {
+        const event: IndexerEvent = {
+            username: data.username,
+            event: data.event || 'update',
+            timestamp: Date.now(),
+        };
+        await broker.publish(event);
+        return new Response(JSON.stringify({ sent: 'ok' }), {
             headers: { 'Content-Type': 'application/json' }
         });
     } catch {
@@ -32,11 +35,26 @@ export async function GET(req: NextRequest) {
         return new Response('Unauthorized', { status: 401 });
     }
 
+    const username = await verifyToken(token);
+    if (!username) {
+        return new Response('Invalid token', { status: 401 });
+    }
+
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
         start(controller) {
-            clients.add(controller);
             let closed = false;
+
+            const unsubscribe = broker.subscribe(username, (event: IndexerEvent) => {
+                if (closed) return;
+                try {
+                    const msg = `data: ${JSON.stringify(event)}\n\n`;
+                    controller.enqueue(encoder.encode(msg));
+                } catch {
+                    closed = true;
+                    unsubscribe();
+                }
+            });
 
             const heartbeat = setInterval(() => {
                 if (closed) { clearInterval(heartbeat); return; }
@@ -45,14 +63,14 @@ export async function GET(req: NextRequest) {
                 } catch {
                     closed = true;
                     clearInterval(heartbeat);
-                    clients.delete(controller);
+                    unsubscribe();
                 }
             }, 25000);
 
             req.signal.addEventListener('abort', () => {
                 closed = true;
                 clearInterval(heartbeat);
-                clients.delete(controller);
+                unsubscribe();
             });
         },
         cancel() {

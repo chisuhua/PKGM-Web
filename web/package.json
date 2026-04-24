@@ -12,6 +12,7 @@
     "@eslint/eslintrc": "^3.3.5",
     "jose": "^6.2.2",
     "next": "^15.3.5",
+    "redis": "^4.7.0",
     "react": "^19",
     "react-dom": "^19",
     "react-markdown": "^10.1.0",
