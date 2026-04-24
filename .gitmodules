@@ -1,0 +1,6 @@
+[submodule "PKGM-Wiki"]
+	path = PKGM-Wiki
+	url = git@github.com:chisuhua/PKGM-Wiki.git
+[submodule "PKGM-Manager"]
+	path = PKGM-Manager
+	url = git@github.com:chisuhua/PKGM-Manager.git
