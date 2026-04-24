@@ -52,13 +52,13 @@ PKGM-Web/
 
 ```bash
 # 查看 PKGM-Manager 文档
-cat PKGM-Manager/manager/docs/ARCHITECTURE.md
+cat PKGM-Manager/docs/ARCHITECTURE.md
 
 # 查看 PKGM-Wiki 文档
 cat PKGM-Wiki/docs/ARCHITECTURE.md
 
 # 访问 PKGM 总览
-cat PKGM/docs/SYSTEM-ARCHITECTURE-OVERVIEW.md
+cat PKGM-Manager/docs/SYSTEM-ARCHITECTURE-OVERVIEW.md
 ```
 
 ## 开发命令

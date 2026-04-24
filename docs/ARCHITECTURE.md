@@ -338,8 +338,8 @@ CREATE VIRTUAL TABLE documents_fts USING fts5(
 
 PKGM 系统统一使用 PKGM-Wiki 定义的 Schema，详见：
 
-- [schema.yaml](../../PKGM-Wiki/references/default-configs/schema.yaml) — 完整的实体类型、关系类型、属性定义
-- [Frontmatter 格式规范](../../PKGM-Wiki/references/default-configs/schema.yaml#4-frontmatter-格式规范) — 正确/错误示例
+- [schema.yaml](../PKGM-Wiki/schema.yaml) — 完整的实体类型、关系类型、属性定义
+- [Frontmatter 格式规范](../PKGM-Wiki/schema.yaml#4-frontmatter-格式规范) — 正确/错误示例
 
 **快速参考**：
 
@@ -355,7 +355,7 @@ PKGM 系统统一使用 PKGM-Wiki 定义的 Schema，详见：
 **Wiki 类型扩展字段**（PKGM Wiki 内容专用）：
 
 Wiki 类型页面的扩展字段参见
-[PKGM-Wiki schema.yaml §3 通用属性（所有实体必须拥有）](../../PKGM-Wiki/references/default-configs/schema.yaml#3-通用属性所有实体必须拥有)。
+[PKGM-Wiki schema.yaml §3 通用属性（所有实体必须拥有）](../PKGM-Wiki/schema.yaml#3-通用属性所有实体必须拥有)。
 
 **状态机规则**:
 
@@ -389,7 +389,7 @@ PKGM-Manager → create-agent 技能
     │   ├── content/app/wiki/01_Wiki/...
     │   └── meta/index.db
 ├─→ 初始化 Wiki 骨架 (content/app/wiki/)
-     │   └─→ bash /workspace/project/PKGM-Wiki/skills/pkgm/scripts/init_user_wiki.sh {username}
+     │   └─→ bash ../PKGM-Wiki/skills/pkgm/scripts/init_user_wiki.sh {username}
     ├─→ 创建用户专属 Agent (agent-workspace/SOUL.md)
     │   └─→ templates/SOUL_TEMPLATE.md
     ├─→ 写入 USER_PROMPT.md
@@ -404,7 +404,7 @@ PKGM-Manager → create-agent 技能
 |------|------|------|
 | SOUL.md | `/users/{username}/agent-workspace/SOUL.md` | Agent 身份定义 |
 | USER_PROMPT.md | `/users/{username}/agent-workspace/USER_PROMPT.md` | System Prompt |
-| init_user_wiki.sh | `/workspace/project/PKGM-Wiki/skills/pkgm/scripts/init_user_wiki.sh` | Wiki 目录初始化脚本 |
+| init_user_wiki.sh | `../PKGM-Wiki/skills/pkgm/scripts/init_user_wiki.sh` | Wiki 目录初始化脚本 |
 
 ### 5.2 PKGM-Wiki 内容消费
 
@@ -438,7 +438,7 @@ Next.js 渲染展示
 - `lifecycle.status`: active/superseded/deprecated/refuted
 - `relations`: wikilink 格式 `[[页面名]]`
 
-详细规范参见 [PKGM-Wiki schema.yaml](/workspace/project/PKGM-Wiki/references/default-configs/schema.yaml)。
+详细规范参见 [PKGM-Wiki schema.yaml](../PKGM-Wiki/schema.yaml)。
 
 ### 5.3 Indexer HTTP API 完整契约
 
