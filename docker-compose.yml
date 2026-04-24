@@ -96,6 +96,24 @@ services:
 
 
   # ============================================
+  # Redis（可选，仅多实例部署时需要）
+  # ============================================
+  redis:
+    image: redis:7-alpine
+    container_name: pkgm-redis
+    restart: unless-stopped
+    command: redis-server --appendonly yes --maxmemory 128mb --maxmemory-policy allkeys-lru
+    volumes:
+      - redis-data:/data
+    networks:
+      - pkgm-net
+    deploy:
+      resources:
+        limits:
+          memory: "128m"
+          cpus: "0.25"
+
+  # ============================================
   # PKGM-Web Indexer（索引服务）
   # ============================================
   pkgm-indexer:
@@ -164,3 +182,6 @@ services:
 networks:
   pkgm-net:
     driver: bridge
+
+volumes:
+  redis-data:
