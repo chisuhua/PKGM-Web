@@ -188,6 +188,16 @@ checkNFSHealth();
 setInterval(checkNFSHealth, 5 * 60 * 1000);
 
 // ============================================================
+// 指标收集
+// ============================================================
+const metrics = {
+    filesIndexed: 0,
+    filesSkipped: 0,
+    errors: 0,
+    lastEventTime: null,
+};
+
+// ============================================================
 // 全局防抖 + 按用户分组批处理
 // ============================================================
 const pending = new Map();
@@ -223,12 +233,15 @@ function flush() {
                             const row = parseAndSegment(p);
                             if (row.status === 'writing') {
                                 console.log(`  [${user}] Skip (writing): ${p}`);
+                                metrics.filesSkipped++;
                                 continue;
                             }
                             db._upsert.run(row);
                             db._fts_upsert.run(row);
+                            metrics.filesIndexed++;
                         } catch (err) {
                             console.error(`  [${user}] Parse error: ${p}`, err.message);
+                            metrics.errors++;
                         }
                     }
                 }
@@ -238,9 +251,11 @@ function flush() {
             // 强制 checkpoint 确保 NFS 写入
             db.pragma('wal_checkpoint(FULL)');
             notifyWeb(user, 'update');
+            metrics.lastEventTime = new Date().toISOString();
             console.log(`[${user}] Batch: ${items.length} files → indexed`);
         } catch (err) {
             console.error(`[${user}] Error:`, err.message);
+            metrics.errors++;
         }
     }
 }
@@ -362,6 +377,27 @@ function startHttpServer() {
             const statusCode = nfsHealthStatus === 'error' ? 503 : 200;
             res.writeHead(statusCode, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(health));
+            return;
+        }
+
+        // GET /metrics
+        if (req.method === 'GET' && pathname === '/metrics') {
+            let output = '';
+            const addMetric = (name, type, value) => {
+                output += `# HELP ${name} PKGM Indexer metric\n`;
+                output += `# TYPE ${name} ${type}\n`;
+                output += `${name} ${value}\n\n`;
+            };
+
+            addMetric('pkgm_uptime_seconds', 'gauge', process.uptime());
+            addMetric('pkgm_indexer_files_indexed_total', 'counter', metrics.filesIndexed);
+            addMetric('pkgm_indexer_files_skipped_total', 'counter', metrics.filesSkipped);
+            addMetric('pkgm_indexer_errors_total', 'counter', metrics.errors);
+            addMetric('pkgm_indexer_users_watched', 'gauge', watchedUsers ? watchedUsers.size : 0);
+            addMetric('pkgm_indexer_nfs_health', 'gauge', nfsHealthStatus === 'ok' ? 1 : 0);
+
+            res.writeHead(200, { 'Content-Type': 'text/plain; version=0.0.4' });
+            res.end(output);
             return;
         }
 
