@@ -15,8 +15,11 @@ PKGM-Web/                    # 展示层（当前项目）
 ├── web/                    # Next.js 前端 (port 3001)
 ├── indexer/                # Node.js 索引服务 (port 3004)
 ├── docker-compose.yml      # 容器编排
-├── PKGM-Manager -> ../PKGM # 链接到 PKGM-Manager（管理平面）
-└── PKGM-Wiki -> ../PKGM-Wiki  # 链接到 PKGM-Wiki（业务逻辑层）
+├── PKGM-Manager/           # Git submodule → 管理平面
+│   └── docs/              # 架构文档
+└── PKGM-Wiki/             # Git submodule → 业务逻辑层
+    ├── docs/              # 架构文档
+    └── schema.yaml        # 核心 Schema（三个项目共用）
 ```
 
 | 项目 | 职责 | 定位 |
@@ -42,8 +45,10 @@ PKGM-Web/
 ├── indexer/              # Node.js 索引服务 (port 3004)
 │   └── index.js          # 单实例多用户扫描
 ├── docker-compose.yml    # 容器编排
-├── PKGM-Manager -> ../PKGM  # 链接到管理平面
-└── PKGM-Wiki -> ../PKGM-Wiki  # 链接到业务逻辑层
+├── PKGM-Manager/        # Git submodule → 管理平面
+│   └── docs/            # 架构文档
+└── PKGM-Wiki/           # Git submodule → 业务逻辑层
+    └── schema.yaml      # 核心 Schema
 ```
 
 ### 跨项目开发
@@ -60,6 +65,10 @@ cat PKGM-Wiki/docs/ARCHITECTURE.md
 # 访问 PKGM 总览
 cat PKGM-Manager/docs/SYSTEM-ARCHITECTURE-OVERVIEW.md
 ```
+
+> **Submodule 工作流**：PKGM-Manager 和 PKGM-Wiki 是 Git submodule。
+> - 子模块内部修改 → 在子模块目录内提交
+> - 子模块引用更新 → 在 PKGM-Web 提交 `git add PKGM-Manager PKGM-Wiki`
 
 ## 开发命令
 

@@ -11,6 +11,57 @@ description: PKGM-Web 项目环境感知技能。当在 PKGM-Web 项目中工作
 
 **你运行在 OpenClaw 容器内。** 这是一个特权容器，通过 supervisord 管理多个服务。
 
+## 项目结构
+
+PKGM-Web 是三项目架构中的**展示层**，通过 Git submodule 关联其他项目：
+
+| 目录 | 类型 | 说明 |
+|------|------|------|
+| `PKGM-Manager/` | Git Submodule | 管理平面 - 多租户用户/Agent 管理 |
+| `PKGM-Wiki/` | Git Submodule | 业务逻辑层 - 知识管线 |
+| `web/` | 本地目录 | Next.js 前端 (port 3001) |
+| `indexer/` | 本地目录 | Node.js 索引服务 (port 3004) |
+
+## Git Submodule 工作流
+
+### 初始化子模块（首次克隆后）
+```bash
+git submodule update --init
+```
+
+### 更新子模块到最新
+```bash
+# 获取远程最新
+git fetch origin
+cd PKGM-Manager && git pull origin main && cd ..
+git fetch origin
+cd PKGM-Wiki && git pull origin main && cd ..
+
+# 或使用 git submodule 命令
+git submodule update --remote
+```
+
+### 提交规范（重要）
+1. **子模块内部修改** → 在子模块目录内提交
+   ```bash
+   cd PKGM-Manager
+   git add . && git commit -m "docs: ..."
+   git push
+   cd ..
+   ```
+2. **PKGM-Web 主项目修改** → 在 PKGM-Web 提交
+3. **更新子模块引用** → 在 PKGM-Web 提交
+   ```bash
+   git add PKGM-Manager PKGM-Wiki
+   git commit -m "chore: Update submodules"
+   ```
+
+### 路径引用约定
+子模块之间使用相对路径引用：
+- PKGM-Manager → `../PKGM-Wiki/schema.yaml`
+- PKGM-Wiki → `../PKGM-Manager/docs/ARCHITECTURE.md`
+- PKGM-Web → `../PKGM-Wiki/schema.yaml`
+
 ## 关键路径映射
 
 | 容器内路径 | 宿主机路径 | 说明 |
