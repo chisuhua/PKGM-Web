@@ -37,3 +37,7 @@ Thumbs.db
 # PEM 证书
 *.pem
 *.key
+
+# AI 工作跟踪文件
+.agents/plans/
+.agents/progress/
