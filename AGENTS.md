@@ -190,6 +190,20 @@ PRAGMA busy_timeout = 5000;
 - Web: `docker compose up -d pkgm-web` (只读挂载用户目录)
 - Indexer: `docker compose up -d pkgm-indexer` (读写挂载用户目录)
 
+### Nginx 部署
+Nginx 配置文件位于项目 `nginx/` 目录，部署时需在宿主机执行：
+
+```bash
+# 复制配置文件到 Nginx
+sudo cp /mnt/nas/project/PKGM-Web/nginx/pkgm-web /etc/nginx/sites-available/
+sudo ln -sf /etc/nginx/sites-available/pkgm-web /etc/nginx/sites-enabled/
+
+# 测试并重载
+sudo nginx -t && sudo nginx -s reload
+```
+
+> **注意**：Nginx 配置涉及限速、代理等安全策略，修改后需验证。
+
 ### 索引重建
 ```bash
 rm -f /workspace/project/PKGM/users/{username}/meta/index.db*
