@@ -3,7 +3,7 @@ services:
   # OpenClaw Agent（原 aidev2 容器）
   # ============================================
   openclaw:
-    image: my-dev-env:latest
+    image: my-dev-env:v0.3
     container_name: openclaw
     privileged: true
     restart: always
@@ -32,10 +32,13 @@ services:
       # 工具链
       #- ~/workspace/home/.local/share/nvim:/home/ubuntu/.local/share/nvim:rw
       - ~/workspace/home/.local/share:/home/ubuntu/.local/share:rw
+      - ~/workspace/home/.local/state:/home/ubuntu/.local/state:rw
+      - ~/workspace/home/.rustup:/home/ubuntu/.rustup:rw
       - ~/workspace/home/venv:/home/ubuntu/venv:rw
       #- ~/workspace/home/.bun/bin:/home/ubuntu/.bun/bin:rw
       #- ~/workspace/home/.bun/install/global:/home/ubuntu/.bun/install/global:rw
       # 工作空间
+      - ~/workspace/home/.cache:/home/ubuntu/.cache:rw
       - ~/workspace:/workspace:rw
       - /mnt/nas/project:/workspace/project:rw
       # services
@@ -54,45 +57,6 @@ services:
         reservations:
           memory: "512m"
           cpus: "0.25"
-
-  # ============================================
-  # PKGM-Manager（用户 Agent 管理）
-  # ============================================
-  # PKGM-Manager 运行在 openclaw 容器内（作为 Agent 实例）
-  # 通过 gateway config.patch 注册
-
-  # ============================================
-  # PKGM-Web 前端（Next.js）
-  # ============================================
-  pkgm-web:
-    build:
-      context: /mnt/nas/project/PKGM-Web
-      dockerfile: web/Dockerfile
-    container_name: pkgm-web
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:3001:3001"
-    volumes:
-      # 只读挂载所有用户目录
-      - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
-    env_file:
-      - ./.env  # JWT_SECRET
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - PKGM_USERS_DIR=/workspace/project/PKGM/users
-      - MULTI_USER=true
-      - INDEXER_HOST=pkgm-indexer
-      - INDEXER_PORT=3004
-    depends_on:
-      - pkgm-indexer
-    networks:
-      - pkgm-net
-    deploy:
-      resources:
-        limits:
-          memory: "512m"
-          cpus: "1.0"
 
 
   # ============================================
@@ -171,6 +135,8 @@ services:
       - MULTI_USER=true
       - INDEXER_HOST=pkgm-indexer
       - INDEXER_PORT=3004
+    depends_on:
+      - pkgm-indexer
     networks:
       - pkgm-net
     deploy:
