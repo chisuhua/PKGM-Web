@@ -23,6 +23,7 @@ export default function Home() {
 
     useEffect(() => {
         loadCurrentUser();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     async function loadCurrentUser() {
