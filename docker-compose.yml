@@ -111,56 +111,20 @@ services:
           cpus: "0.5"
 
   # ============================================
-  # PKGM-Web 前端（Next.js）
+  # PKGM-Web 前端开发模式（热重载，替代 pkgm-web）
   # ============================================
+  # 默认启动此服务，代码修改后浏览器刷新即可生效
+  # 生产部署时改为 docker compose up pkgm-web
   pkgm-web:
-    build:
-      context: /mnt/nas/project/PKGM-Web
-      dockerfile: web/Dockerfile
-    container_name: pkgm-web
-    restart: unless-stopped
-    ports:
-      - "127.0.0.1:3001:3001"
-    volumes:
-      # 只读挂载所有用户目录
-      - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
-    env_file:
-      - ./.env  # JWT_SECRET, INDEXER_SECRET
-    environment:
-      - NODE_ENV=production
-      - PORT=3001
-      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret-change-in-production}
-      - INDEXER_SECRET=${INDEXER_SECRET:-default-secret-change-in-production}
-      - PKGM_USERS_DIR=/workspace/project/PKGM/users
-      - MULTI_USER=true
-      - INDEXER_HOST=pkgm-indexer
-      - INDEXER_PORT=3004
-    depends_on:
-      - pkgm-indexer
-    networks:
-      - pkgm-net
-    deploy:
-      resources:
-        limits:
-          memory: "256m"
-          cpus: "0.5"
-
-  # ============================================
-  # PKGM-Web 前端开发模式（热重载）
-  # ============================================
-  # 使用方式：
-  #   docker compose up pkgm-web-dev
-  # 代码修改后浏览器刷新即可生效，无需重建镜像
-  pkgm-web-dev:
     image: node:22-alpine
-    container_name: pkgm-web-dev
+    container_name: pkgm-web
     working_dir: /app
     command: sh -c "cd web && npm install && npm run dev"
     volumes:
       - ./web:/app:rw
       - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
     ports:
-      - "127.0.0.1:3002:3000"
+      - "127.0.0.1:3001:3000"
     env_file:
       - ./.env
     environment:
@@ -173,8 +137,38 @@ services:
       - pkgm-indexer
     networks:
       - pkgm-net
-    profiles:
-      - dev  # 仅在 docker compose --profile dev up 时启动
+
+  # ============================================
+  # PKGM-Web 生产模式（预构建镜像）
+  # ============================================
+  # 生产部署时使用：docker compose up pkgm-web-prod
+  # pkgm-web-prod:
+  #   build:
+  #     context: /mnt/nas/project/PKGM-Web
+  #     dockerfile: web/Dockerfile
+  #   container_name: pkgm-web-prod
+  #   restart: unless-stopped
+  #   ports:
+  #     - "127.0.0.1:3001:3001"
+  #   volumes:
+  #     - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
+  #   env_file:
+  #     - ./.env
+  #   environment:
+  #     - NODE_ENV=production
+  #     - PORT=3001
+  #     - JWT_SECRET=${JWT_SECRET:-default-jwt-secret-change-in-production}
+  #     - INDEXER_SECRET=${INDEXER_SECRET:-default-secret-change-in-production}
+  #     - PKGM_USERS_DIR=/workspace/project/PKGM/users
+  #     - MULTI_USER=true
+  #     - INDEXER_HOST=pkgm-indexer
+  #     - INDEXER_PORT=3004
+  #   depends_on:
+  #     - pkgm-indexer
+  #   networks:
+  #     - pkgm-net
+  #   profiles:
+  #     - prod  # 仅在 docker compose --profile prod up 时启动
 
 networks:
   pkgm-net:
