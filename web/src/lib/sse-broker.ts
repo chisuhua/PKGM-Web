@@ -89,7 +89,7 @@ class RedisBroker implements SSEBroker {
 
         if (!this.redisChannels.has(channel)) {
             this.redisChannels.add(channel);
-            this.subClient.subscribe(channel).catch(console.error);
+            this.subClient.subscribe(channel, () => {}).catch(console.error);
         }
 
         return () => {
