@@ -145,6 +145,37 @@ services:
           memory: "256m"
           cpus: "0.5"
 
+  # ============================================
+  # PKGM-Web 前端开发模式（热重载）
+  # ============================================
+  # 使用方式：
+  #   docker compose up pkgm-web-dev
+  # 代码修改后浏览器刷新即可生效，无需重建镜像
+  pkgm-web-dev:
+    image: node:22-alpine
+    container_name: pkgm-web-dev
+    working_dir: /app
+    command: sh -c "cd web && npm install && npm run dev"
+    volumes:
+      - ./web:/app:rw
+      - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
+    ports:
+      - "127.0.0.1:3002:3000"
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=development
+      - PORT=3000
+      - PKGM_USERS_DIR=/workspace/project/PKGM/users
+      - INDEXER_HOST=pkgm-indexer
+      - INDEXER_PORT=3004
+    depends_on:
+      - pkgm-indexer
+    networks:
+      - pkgm-net
+    profiles:
+      - dev  # 仅在 docker compose --profile dev up 时启动
+
 networks:
   pkgm-net:
     driver: bridge

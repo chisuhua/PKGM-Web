@@ -72,7 +72,26 @@ cat PKGM-Manager/docs/SYSTEM-ARCHITECTURE-OVERVIEW.md
 
 ## 开发命令
 
-### Web (Next.js)
+### 生产模式（重建镜像）
+```bash
+# 重新构建并启动
+docker compose build pkgm-web
+docker compose up -d --no-deps pkgm-web
+
+# 完整重启
+docker compose up -d --build --force-recreate pkgm-web
+```
+
+### 开发模式（热重载）
+```bash
+# 启动开发服务（代码修改实时生效）
+docker compose --profile dev up pkgm-web-dev
+
+# 访问 http://localhost:3002
+# 修改 web/src 下的代码 → 浏览器刷新即可见
+```
+
+### Web (Next.js) 本地开发
 ```bash
 cd web
 npm run dev      # 开发服务器 (localhost:3000)
