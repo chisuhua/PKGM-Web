@@ -46,3 +46,5 @@ Thumbs.db
 # 临时/二进制文件
 *.tar.gz
 ~
+# Added by code-review-graph
+.code-review-graph/
