@@ -3,7 +3,7 @@ services:
   # OpenClaw Agent（原 aidev2 容器）
   # ============================================
   openclaw:
-    image: my-dev-env:v0.3
+    image: my-ubuntu-dev:latest
     container_name: openclaw
     privileged: true
     restart: always
@@ -15,6 +15,8 @@ services:
       - "127.0.0.1:8001:8001"
       - "127.0.0.1:8002:8002"
       - "127.0.0.1:8003:8003"
+    env_file:
+      - ~/workspace/home/.env
     volumes:
       # 用户配置
       - ~/workspace/home/.config:/home/ubuntu/.config:rw
@@ -27,23 +29,22 @@ services:
       - ~/workspace/home/.agents:/home/ubuntu/.agents:rw
       - ~/workspace/home/.tmux:/home/ubuntu/.tmux:rw
       - ~/workspace/home/.tmuxinator:/home/ubuntu/.tmuxinator:rw
-      - ~/workspace/home/.tmux.conf:/home/ubuntu/.tmux.conf:ro
+      - ~/workspace/home/.tmux.conf:/home/ubuntu/.tmux.conf:rw
       - ~/workspace/home/.gitconfig:/home/ubuntu/.gitconfig:ro
+      - ~/workspace/home/.env:/home/ubuntu/.env:rw
       # 工具链
       #- ~/workspace/home/.local/share/nvim:/home/ubuntu/.local/share/nvim:rw
       - ~/workspace/home/.local/share:/home/ubuntu/.local/share:rw
       - ~/workspace/home/.local/state:/home/ubuntu/.local/state:rw
       - ~/workspace/home/.rustup:/home/ubuntu/.rustup:rw
       - ~/workspace/home/venv:/home/ubuntu/venv:rw
-      #- ~/workspace/home/.bun/bin:/home/ubuntu/.bun/bin:rw
-      #- ~/workspace/home/.bun/install/global:/home/ubuntu/.bun/install/global:rw
       # 工作空间
       - ~/workspace/home/.cache:/home/ubuntu/.cache:rw
       - ~/workspace:/workspace:rw
       - /mnt/nas/project:/workspace/project:rw
       # services
-      - /mnt/nas/project/PKGM-Web/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:rw
-      - /mnt/nas/project/PKGM-Web/supervisor_log:/var/log/supervisor:rw
+      - ~/workspace/home/supervisord.conf:/etc/supervisor/conf.d/supervisord.conf:rw
+      - ~/workspace/home/supervisor_log:/var/log/supervisor:rw
     #command: ["/bin/bash", "-c", "openclaw gateway"]
     #command: ["/bin/bash", "-c", "source /home/ubuntu/.bashrc && sleep infinity"]
     command: ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf", "-n"]
@@ -118,13 +119,16 @@ services:
   pkgm-web:
     image: node:22-alpine
     container_name: pkgm-web
-    working_dir: /app
-    command: sh -c "cd web && npm install && npm run dev"
+    working_dir: /app/web
+    command: sh -c "npm install && npm run dev"
     volumes:
-      - ./web:/app:rw
+      - ./web:/app/web:rw
+      - /app/web/node_modules
       - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
     ports:
       - "127.0.0.1:3001:3000"
+    tty: true
+    stdin_open: true
     env_file:
       - ./.env
     environment:
@@ -142,33 +146,38 @@ services:
   # PKGM-Web 生产模式（预构建镜像）
   # ============================================
   # 生产部署时使用：docker compose up pkgm-web-prod
-  # pkgm-web-prod:
-  #   build:
-  #     context: /mnt/nas/project/PKGM-Web
-  #     dockerfile: web/Dockerfile
-  #   container_name: pkgm-web-prod
-  #   restart: unless-stopped
-  #   ports:
-  #     - "127.0.0.1:3001:3001"
-  #   volumes:
-  #     - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
-  #   env_file:
-  #     - ./.env
-  #   environment:
-  #     - NODE_ENV=production
-  #     - PORT=3001
-  #     - JWT_SECRET=${JWT_SECRET:-default-jwt-secret-change-in-production}
-  #     - INDEXER_SECRET=${INDEXER_SECRET:-default-secret-change-in-production}
-  #     - PKGM_USERS_DIR=/workspace/project/PKGM/users
-  #     - MULTI_USER=true
-  #     - INDEXER_HOST=pkgm-indexer
-  #     - INDEXER_PORT=3004
-  #   depends_on:
-  #     - pkgm-indexer
-  #   networks:
-  #     - pkgm-net
-  #   profiles:
-  #     - prod  # 仅在 docker compose --profile prod up 时启动
+  pkgm-web-prod:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    container_name: pkgm-web-prod
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3001:3001"
+    volumes:
+      - /mnt/nas/project/PKGM/users:/workspace/project/PKGM/users:ro
+    env_file:
+      - ./.env
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - JWT_SECRET=${JWT_SECRET:-default-jwt-secret-change-in-production}
+      - INDEXER_SECRET=${INDEXER_SECRET:-default-secret-change-in-production}
+      - PKGM_USERS_DIR=/workspace/project/PKGM/users
+      - MULTI_USER=true
+      - INDEXER_HOST=pkgm-indexer
+      - INDEXER_PORT=3004
+    depends_on:
+      - pkgm-indexer
+    networks:
+      - pkgm-net
+    profiles:
+      - prod  # 仅在 docker compose --profile prod up 时启动
+    deploy:
+      resources:
+        limits:
+          memory: "256m"
+          cpus: "0.5"
 
 networks:
   pkgm-net:
