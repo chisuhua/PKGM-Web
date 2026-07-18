@@ -72,7 +72,7 @@
 
 共 22 个关键决策点，按项目/归属分类。讨论后将保存为 ADR 文档。编号规则详见各小节注释。
 
-### 3.1 PKGM-Web 展示面（5 个议题）
+### 3.1 PKGM-Web 展示面（4 个议题）
 
 | 编号 | 议题 | 优先级 | 说明 | 归档位置 |
 |------|------|--------|------|---------|
@@ -80,7 +80,6 @@
 | adr-002 | Webhook Gateway 持久化策略 | 🔴 高 | Outbox 模式（SQLite）vs Redis Stream vs 消息队列 vs MinIO queue_dir | `docs/adr/adr-002-webhook-persistence.md` |
 | adr-003 | 双引擎搜索架构 | 🟡 中 | 独立端点 + 前端切换 vs 统一端点 vs 混合查询 | `docs/adr/adr-003-search-architecture.md` |
 | adr-004 | 上传服务实现方式 | 🟡 中 | Presigned URL + tusd vs Next.js API Route vs MinIO SDK | `docs/adr/adr-004-upload-service.md` |
-| adr-005 | Logseq 兼容层（合并投影生成） | 🟢 低 | PKGM-Web 端转换 vs PKGM-Wiki 端生成 vs 用户手动导出（含 `.logseq/` 投影策略，合并原 adr-027） | `docs/adr/adr-005-logseq-compat.md` |
 
 ### 3.2 PKGM-Manager 控制面（5 个议题）
 
@@ -106,11 +105,12 @@
 > **注 1**：原 adr-027（Logseq 投影生成策略）已合并入 adr-005（Logseq 兼容层），不再单独立项。
 > **注 2**：PKGM-Wiki 当前有 20 个已确认 ADR（adr-001~023，含跳过编号），另有 4 个未来议题（adr-031~034）见本文 §附录。详见 [PKGM-Wiki ADR 索引](../PKGM-Wiki/docs/adr/README.md)。上述 6 个新议题续接编号从 adr-024 开始。
 
-### 3.4 跨项目议题（6 个议题）
+### 3.4 跨项目议题（7 个议题）
 
 | 编号 | 议题 | 优先级 | 说明 | 归档位置 |
 |------|------|--------|------|---------|
 | adr-000 | 执行模型：ADR-017 vs Temporal Worker | 🔴 高 | 废弃 ADR-017 vs Activity 调 OpenClaw API vs 双轨制（阻塞所有其他议题） | `docs/adr/adr-000-execution-model.md` |
+| adr-005 | Logseq 兼容层（合并投影生成） | 🟢 低 | PKGM-Web 端转换 vs PKGM-Wiki 端生成 vs 用户手动导出（含 `.logseq/` 投影策略，合并原 adr-027） | `docs/adr/adr-005-logseq-compat.md` |
 | adr-016 | 跨项目状态共享协议 | 🔴 高 | Webhook vs 共享 DB vs 事件总线 vs 轮询 | `docs/adr/adr-016-cross-project-state.md` |
 | adr-017 | Phase 0 单机资源估算 | 🟡 中 | 单机最低配置评估（16 GB RAM + 4 vCPU） | `docs/adr/adr-017-resource-estimation.md` |
 | adr-018 | 可观测性与告警策略 | 🟡 中 | OTel + Loki + Grafana vs 简化方案 | `docs/adr/adr-018-observability.md` |
@@ -162,7 +162,10 @@
 
 ### 审核检查点
 
-每次提交涉及 ADR 的修改前，确认三项目的 README 中 ADR 引用一致，并确保 `docs/adr-discussion-plan.md` 的议题总览已同步。
+每次提交涉及 ADR 的修改前：
+1. 确认三项目的 README 中 ADR 引用一致
+2. 运行 `./tools/check-adr-consistency.sh` 确认无编号冲突
+3. 确保 `docs/adr-discussion-plan.md` 的议题总览已同步
 
 ### 废弃文档
 
