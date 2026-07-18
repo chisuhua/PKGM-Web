@@ -103,7 +103,7 @@
 | adr-030 | 可插拔编译后端架构 | 🟡 中 | 三层架构 vs 仅扩展 wiki-gen vs 不做（基于 Haystack+Skyframe+GraphRAG 调研） | `PKGM-Wiki/docs/adr/adr-030-compilation-backend.md` |
 
 > **注 1**：原 adr-027（Logseq 投影生成策略）已合并入 adr-005（Logseq 兼容层），不再单独立项。
-> **注 2**：PKGM-Wiki 已有 23 个历史 ADR（adr-001 到 adr-023），定义了知识图谱 Schema、管线设计、知识管理等核心业务逻辑。详见 [PKGM-Wiki ADR 索引](../PKGM-Wiki/docs/adr/README.md)。上述 6 个新议题续接编号从 adr-024 开始。
+> **注 2**：PKGM-Wiki 当前有 20 个已确认 ADR（adr-001~023，含跳过编号），另有 4 个未来议题（adr-031~034）见本文 §附录。详见 [PKGM-Wiki ADR 索引](../PKGM-Wiki/docs/adr/README.md)。上述 6 个新议题续接编号从 adr-024 开始。
 
 ### 3.4 跨项目议题（6 个议题）
 
@@ -125,8 +125,8 @@
 | 优先级 | 议题数量 | 议题列表 |
 |--------|---------|---------|
 | 🔴 高（P0） | 9 | adr-000, 001, 002, 006, 007, 008, 010, 016, 024 |
-| 🟡 中（P1） | 10 | adr-003, 004, 009, 017, 018, 019, 020, 025, 026, 030 |
-| 🟢 低（P2） | 3 | adr-005, 028, 029 |
+| 🟡 中（P1） | 11 | adr-003, 004, 009, 017, 018, 019, 020, 025, 026, 028, 030 |
+| 🟢 低（P2） | 2 | adr-005, 029 |
 
 **讨论顺序**：按 Wave 分组推进，依赖驱动而非纯优先级。Wave 0（adr-000）阻塞所有其他议题。详见 [adr-discussion-plan.md §3](./adr-discussion-plan.md)。
 
