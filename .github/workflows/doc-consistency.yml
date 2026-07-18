@@ -1,0 +1,44 @@
+name: Document Consistency Check
+
+on:
+  push:
+    paths:
+      - 'docs/**/*.md'
+      - 'PKGM-Wiki/docs/**/*.md'
+      - 'PKGM-Manager/docs/**/*.md'
+      - 'tools/check-adr-consistency.sh'
+      - '.github/workflows/doc-consistency.yml'
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+      - 'PKGM-Wiki/docs/**/*.md'
+      - 'PKGM-Manager/docs/**/*.md'
+      - 'tools/check-adr-consistency.sh'
+  workflow_dispatch:  # 手动触发
+
+jobs:
+  consistency:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 1
+
+      - name: Run ADR consistency check
+        id: adr_check
+        run: |
+          chmod +x tools/check-adr-consistency.sh
+          ./tools/check-adr-consistency.sh
+        shell: bash
+
+      - name: Report status
+        if: always()
+        run: |
+          if [ "${{ steps.adr_check.outcome }}" = "success" ]; then
+            echo "✅ 文档一致性检查通过"
+          else
+            echo "❌ 文档一致性检查失败，请查看上方输出"
+            exit 1
+          fi
