@@ -151,6 +151,26 @@
 
 ---
 
+## 7. 文档维护流程
+
+### 新增/修改 ADR 议题时，必须同步更新
+
+1. **本项目**的 `README.md`（docs/ 或 docs/adr/）
+2. **PKGM 文档总索引** `docs/README.md` 的 §3 ADR 议题列表
+3. **ADR 讨论计划** `docs/adr-discussion-plan.md` 的议题总览表
+
+### 审核检查点
+
+每次提交涉及 ADR 的修改前，确认三项目的 README 中 ADR 引用一致，并确保 `docs/adr-discussion-plan.md` 的议题总览已同步。
+
+### 废弃文档
+
+- 文件顶部添加 Deprecated 标记 + 替代文档路径
+- 引用方全部更新为新路径
+- 至少保留一个 Git 版本周期后再删除
+
+---
+
 *本文档为 PKGM 项目文档的总入口。*  
 *当前状态：设计中（待评审）*
 
