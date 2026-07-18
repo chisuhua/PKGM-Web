@@ -41,3 +41,8 @@ Thumbs.db
 # AI 工作跟踪文件
 .agents/plans/
 .agents/progress/
+.omo/
+
+# 临时/二进制文件
+*.tar.gz
+~
